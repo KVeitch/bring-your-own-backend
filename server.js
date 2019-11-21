@@ -37,7 +37,12 @@ app.get('/api/v1/players/:id', (request, response) => {
   database('players')
     .where({ id: id })
     .then(player => {
-      response.status(200).json(player);
+      if (player.length === 0) {
+        response
+          .status(404)
+          .json({ error: `There is a not player with an id of ${id}` });
+      }
+      response.status(200).json(player[0]);
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -53,7 +58,12 @@ app.get('/api/v1/teams/:id', (request, response) => {
   database('teams')
     .where(queryDeterminiator)
     .then(team => {
-      response.status(200).json(team);
+      if (team.length === 0) {
+        response
+          .status(404)
+          .json({ error: `Requested team: ${id}. There is no record of that team` });
+      }
+      response.status(200).json(team[0]);
     })
     .catch(error => {
       response.status(500).json({ error });
@@ -69,9 +79,19 @@ app.get('/api/v1/teams/:id/roster', (request, response) => {
   database('teams')
     .where(queryDeterminiator)
     .then(team => {
+      if (team.length === 0) {
+        response
+          .status(404)
+          .json({ error: `Requested team: ${id}. There is no record of that team` });
+      }
       database('players')
         .where({ team: team[0].teamname })
         .then(players => {
+          if (players.length === 0) {
+            response
+              .status(404)
+              .json({ error: `The requested team: ${id}, has no players` });
+          }
           response.status(200).json(players);
         });
     })
@@ -85,7 +105,10 @@ app.delete('/api/v1/players/:id', (request, response) => {
   database('players')
     .where({ id: id })
     .del()
-    .then(() => response.status(200).json(`player ${id} sucessfully deleted`));
+    .then(() => response.status(200).json(`player ${id} sucessfully deleted`))
+    .catch(error => {
+      response.status(404).json({ error });
+    });
 });
 
 app.post('/api/v1/players', (request, response) => {
@@ -108,8 +131,8 @@ app.post('/api/v1/players', (request, response) => {
 
   database('players')
     .insert(player, 'id')
-    .then(player => {
-      response.status(201).json({ id: player[0] });
+    .then(playerId => {
+      response.status(201).json({ id: playerId[0], ...player });
     })
     .catch(error => {
       response.status(500).json({ error });
