@@ -1,5 +1,5 @@
-const teamsData = require('../../../../data/MLSTeams');
-const playersData = require('../../../../data/MLSPlayers');
+const teamsData = require('../../../data/MLSTeams');
+const playersData = require('../../../data/MLSPlayers');
 
 const createTeam = (knex, team) => {
   return knex('teams')

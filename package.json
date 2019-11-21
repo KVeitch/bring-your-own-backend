@@ -19,6 +19,8 @@
   "homepage": "https://github.com/KVeitch/bring-your-own-backend#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "knex": "^0.20.2",
+    "pg": "^7.12.1"
   }
 }
