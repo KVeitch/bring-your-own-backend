@@ -4,11 +4,12 @@ const app = express();
 const environment = process.env.NODE_ENV || 'development';
 const configuration = require('./knexfile')[environment];
 const database = require('knex')(configuration);
-const bodyParser = require('body-parser');
+// const bodyParser = require('body-parser');
 
 app.locals.title = '2019 MLS Teams and Players';
+app.use(express.json());
 app.use(cors());
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
 app.set('port', process.env.PORT || 3001);
 
 app.get('/api/v1/teams', (request, response) => {
@@ -47,10 +48,12 @@ app.get('/api/v1/players/:id', (request, response) => {
 
 app.get('/api/v1/teams/:id', (request, response) => {
   const { id } = request.params;
+  const queryDeterminiator = parseInt(id)
+    ? { id: parseInt(id) }
+    : { teamname: id };
+
   database('teams')
-    .where(function() {
-      this.where('teamname', id).orWhere('id', id);
-    })
+    .where(queryDeterminiator)
     .then(team => {
       response.status(200).json(team);
     })
@@ -61,8 +64,12 @@ app.get('/api/v1/teams/:id', (request, response) => {
 
 app.get('/api/v1/teams/:id/roster', (request, response) => {
   const { id } = request.params;
+  const queryDeterminiator = parseInt(id)
+    ? { id: parseInt(id) }
+    : { teamname: id };
+
   database('teams')
-    .where({ id: id })
+    .where(queryDeterminiator)
     .then(team => {
       database('players')
         .where({ team: team[0].teamname })
