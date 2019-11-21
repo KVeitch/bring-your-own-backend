@@ -2,12 +2,12 @@ exports.up = function(knex) {
   return Promise.all([
     knex.schema.createTable('teams', table => {
       table.increments('id').primary();
-      table.string('teamName')
-      table.unique('teamName');
+      table.string('teamname')
+      table.unique('teamname');
       table.string('stadium');
       table.string('logoUrl');
       table.string('city');
-      table.timestamp(true, true);
+      table.timestamps(true, true);
     }),
 
     knex.schema.createTable('players', table => {
@@ -18,9 +18,9 @@ exports.up = function(knex) {
       table.string('preferedFoot');
       table.integer('age').unsigned();
       table.string('team');
-      table.foreign('team').references('teams.teamName');
+      table.foreign('team').references('teams.teamname');
 
-      table.timestamp(true, true);
+      table.timestamps(true, true);
     })
   ]);
 };
