@@ -5,17 +5,17 @@ const createTeam = (knex, team) => {
   return knex('teams')
     .insert(
       {
-        teamName: team.Club,
+        teamname: team.Club,
         stadium: team.Stadium,
         logoUrl: team.ClubLogo,
         city: team.City
       },
-      'teamName'
+      'teamname'
     )
-    .then(teamName => {
+    .then(teamname => {
       let playersPromise = [];
       playersData
-        .filter(player => player.Club === teamName[0])
+        .filter(player => player.Club === teamname[0])
         .forEach(player => {
           playersPromise.push(
             createPlayer(knex, {
@@ -24,7 +24,7 @@ const createTeam = (knex, team) => {
               photoUrl: player.Photo,
               nationality: player.Nationality,
               preferedFoot: player.PreferredFoot,
-              team: teamName[0]
+              team: teamname[0]
             })
           );
         });
