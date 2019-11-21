@@ -103,9 +103,14 @@ app.get('/api/v1/teams/:id/roster', (request, response) => {
 app.delete('/api/v1/players/:id', (request, response) => {
   const { id } = request.params;
   database('players')
-    .where({ id: id })
+    .where({ id: id }).select()
     .del()
-    .then(() => response.status(200).json(`player ${id} sucessfully deleted`))
+    .then(results => {
+      if (results === 0 ) {
+        response.status(404).json(`No player with that id of ${id}`)
+      }
+      response.status(200).json(`Player ${id} sucessfully deleted.`)
+  })
     .catch(error => {
       response.status(404).json({ error });
     });
