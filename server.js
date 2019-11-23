@@ -10,11 +10,6 @@ app.use(express.json());
 app.use(cors());
 app.set('port', process.env.PORT || 3001);
 
-
-// app.get('/', (request, response) => {
-//   response.status(200).
-// })
-
 app.get('/api/v1/teams', (request, response) => {
   database('teams')
     .select()
@@ -133,7 +128,7 @@ app.post('/api/v1/players', (request, response) => {
     'team'
   ]) {
     if (!player[param]) {
-      return response.status(422).send({
+      return response.status(422).json({
         error: `Expected format: { name: <String>, age: <Int>, photoUrl: <String>, nationality: <String>, preferedFoot: <String>, team: <String>, }. You're missing a "${param}" property.`
       });
     }
@@ -154,7 +149,7 @@ app.post('/api/v1/teams', (request, response) => {
   console.log('REQUEST.BODY', team);
   for (let requiredParameter of ['teamname', 'city', 'stadium', 'logoUrl']) {
     if (!team[requiredParameter]) {
-      return response.status(422).send({
+      return response.status(422).json({
         error: `Expected format: { teamname: <String>, city: <String>, stadium: <Sring>, logoUrl: <String> }. You're missing a "${requiredParameter}" property.`
       });
     }
