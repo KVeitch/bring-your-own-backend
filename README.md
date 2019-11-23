@@ -1,4 +1,4 @@
-# Major League Soccer 2019 API
+ # Major League Soccer 2019 API
 
 This API allows you to retrieve data on the 2019 MLS teams and players.
 
@@ -1122,23 +1122,34 @@ PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS
     </tr>
   </thead>
   <tr>
-    <th>
-      200
-    </th>
-    <th>
-      `Player ${id} sucessfully deleted.`
-    </th>
+    <th>200</th>
+    <th>`Player ${id} sucessfully deleted.`</th>
   </tr>
     <tr>
-    <th>
-      404
-    </th>
-    <th>
-      <code>
-        `No player with the id of ${id}`
-      </code> 
-    </th>
+    <th>404</th>
+    <th><code>`No player with the id of ${id}`</code></th>
   </tr>
 </table>
 
+---
 
+### Remove a team:
+<code>DELETE /api/v1/team/:id</code>  
+
+#### Response
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Response</th>
+    </tr>
+  </thead>
+  <tr>
+    <th>200</th>
+    <th>`Player ${id} sucessfully deleted.`</th>
+  </tr>
+    <tr>
+    <th>404</th>
+    <th><code>`No player with the id of ${id}`</code></th>
+  </tr>
+</table>
