@@ -1126,7 +1126,7 @@ PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS
       200
     </th>
     <th>
-      Player ${id} sucessfully deleted. 
+      `Player ${id} sucessfully deleted.`
     </th>
   </tr>
     <tr>
