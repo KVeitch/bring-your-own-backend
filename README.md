@@ -771,6 +771,157 @@ https://mls2019-api.herokuapp.com
   </tr>
 </table>
 
+<details><summary>Example response</summary>
+
+```json
+[
+    {
+        "id": 1,
+        "name": "A. Carleton",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/234525.png",
+        "nationality": "United States",
+        "preferedFoot": "Right",
+        "age": 18,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.372Z",
+        "updated_at": "2019-11-22T17:29:50.372Z"
+    },
+    {
+        "id": 2,
+        "name": "A. Kann",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/213719.png",
+        "nationality": "United States",
+        "preferedFoot": "Left",
+        "age": 27,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.373Z",
+        "updated_at": "2019-11-22T17:29:50.373Z"
+    },
+    {
+        "id": 3,
+        "name": "A. Wheeler-Omiunu",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/237703.png",
+        "nationality": "United States",
+        "preferedFoot": "Right",
+        "age": 23,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.375Z",
+        "updated_at": "2019-11-22T17:29:50.375Z"
+    },
+    {
+        "id": 4,
+        "name": "B. Guzan",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/164505.png",
+        "nationality": "United States",
+        "preferedFoot": "Left",
+        "age": 33,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.385Z",
+        "updated_at": "2019-11-22T17:29:50.385Z"
+    },
+    {
+        "id": 5,
+        "name": "B. Vazquez",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/236885.png",
+        "nationality": "United States",
+        "preferedFoot": "Right",
+        "age": 19,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.386Z",
+        "updated_at": "2019-11-22T17:29:50.386Z"
+    },
+    {
+        "id": 6,
+        "name": "C. Goslin",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/237886.png",
+        "nationality": "United States",
+        "preferedFoot": "Right",
+        "age": 18,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.393Z",
+        "updated_at": "2019-11-22T17:29:50.393Z"
+    },
+    {
+        "id": 7,
+        "name": "C. McCann",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/166847.png",
+        "nationality": "Republic of Ireland",
+        "preferedFoot": "Left",
+        "age": 30,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.408Z",
+        "updated_at": "2019-11-22T17:29:50.408Z"
+    },
+    {
+        "id": 8,
+        "name": "D. Nagbe",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/202078.png",
+        "nationality": "United States",
+        "preferedFoot": "Right",
+        "age": 27,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.409Z",
+        "updated_at": "2019-11-22T17:29:50.409Z"
+    },
+    {
+        "id": 9,
+        "name": "E. Barco",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/236007.png",
+        "nationality": "Argentina",
+        "preferedFoot": "Right",
+        "age": 19,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.410Z",
+        "updated_at": "2019-11-22T17:29:50.410Z"
+    },
+    {
+        "id": 10,
+        "name": "E. Remedi",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/228838.png",
+        "nationality": "Argentina",
+        "preferedFoot": "Right",
+        "age": 23,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.411Z",
+        "updated_at": "2019-11-22T17:29:50.411Z"
+    },
+    {
+        "id": 11,
+        "name": "F. Escobar",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/222587.png",
+        "nationality": "Argentina",
+        "preferedFoot": "Right",
+        "age": 23,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.412Z",
+        "updated_at": "2019-11-22T17:29:50.412Z"
+    },
+    {
+        "id": 12,
+        "name": "G. Garza",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/198589.png",
+        "nationality": "United States",
+        "preferedFoot": "Left",
+        "age": 26,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.412Z",
+        "updated_at": "2019-11-22T17:29:50.412Z"
+    },
+    {
+        "id": 13,
+        "name": "H. Villalba",
+        "photoUrl": "https://cdn.sofifa.org/players/4/19/215107.png",
+        "nationality": "Paraguay",
+        "preferedFoot": "Right",
+        "age": 23,
+        "team": "Atlanta United",
+        "created_at": "2019-11-22T17:29:50.413Z",
+        "updated_at": "2019-11-22T17:29:50.413Z"
+    }
+]
+```
+</details>
+
 ---
 
 ### Add a team:
@@ -844,6 +995,14 @@ https://mls2019-api.herokuapp.com
 
 ```json
 { id: 34}
+```
+or
+
+```json
+{
+    "error": "Expected format: { teamname: <String>, city: <String>, stadium: <Sring>, logoUrl: <String> }.
+    You're missing a 'city' property."
+}
 ```
 </details>
 
@@ -932,6 +1091,55 @@ PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS
     <th>
       <code>
         { error: `Expected format: { name: <String>, age: <Int>, photoUrl: <String>, nationality: <String>, preferedFoot: <String>, team: <String>, }. You're missing a "${param}" property.`}
+      </code> 
+    </th>
+  </tr>
+</table>
+
+
+<details><summary>Example response</summary>
+
+```json
+{
+    "id": 1,
+    "name": "A. Carleton",
+    "photoUrl": "https://cdn.sofifa.org/players/4/19/234525.png",
+    "nationality": "United States",
+    "preferedFoot": "Right",
+    "age": 18,
+    "team": "Atlanta United",
+    "created_at": "2019-11-22T17:29:50.372Z",
+    "updated_at": "2019-11-22T17:29:50.372Z"
+}
+```
+</details>
+
+### Remove a player:
+<code>DELETE /api/v1/players/:id</code>  
+
+#### Response
+<table>
+  <thead>
+    <tr>
+      <th>Status</th>
+      <th>Response</th>
+    </tr>
+  </thead>
+  <tr>
+    <th>
+      200
+    </th>
+    <th>
+      Returns a specific player object. 
+    </th>
+  </tr>
+    <tr>
+    <th>
+      404
+    </th>
+    <th>
+      <code>
+        `No player with the id of ${id}`
       </code> 
     </th>
   </tr>

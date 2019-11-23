@@ -107,7 +107,7 @@ app.delete('/api/v1/players/:id', (request, response) => {
     .del()
     .then(results => {
       if (results === 0 ) {
-        response.status(404).json(`No player with that id of ${id}`)
+        response.status(404).json(`No player with the id of ${id}`)
       }
       response.status(200).json(`Player ${id} sucessfully deleted.`)
   })
