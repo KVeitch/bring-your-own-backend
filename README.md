@@ -1,21 +1,15 @@
 # Major League Soccer 2019 API
 
-Endpoints available (e.g. GET /api/v1/students, POST api/v1/students)
-
-What parameters can be used in certain requests (e.g. For a POST request, what should be put in the request body?)
-
-Sample responses from endpoints (What does the response object look like for a request?)
+This API allows you to retrieve data on the 2019 MLS teams and players.
 
 ---
 
-## Endpoints
-
+## API Endpoints
 
 ### Base URL
 All URLs referenced in the documentation have the following base:
 
 https://mls2019-api.herokuapp.com
-
 
 ### GET all teams:  
 <code>GET /api/v1/teams</code>  
@@ -1114,6 +1108,8 @@ PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS
 ```
 </details>
 
+---
+
 ### Remove a player:
 <code>DELETE /api/v1/players/:id</code>  
 
@@ -1130,7 +1126,7 @@ PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS
       200
     </th>
     <th>
-      Returns a specific player object. 
+      Player ${id} sucessfully deleted. 
     </th>
   </tr>
     <tr>
@@ -1146,19 +1142,3 @@ PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS
 </table>
 
 
-<details><summary>Example response</summary>
-
-```json
-{
-    "id": 1,
-    "name": "A. Carleton",
-    "photoUrl": "https://cdn.sofifa.org/players/4/19/234525.png",
-    "nationality": "United States",
-    "preferedFoot": "Right",
-    "age": 18,
-    "team": "Atlanta United",
-    "created_at": "2019-11-22T17:29:50.372Z",
-    "updated_at": "2019-11-22T17:29:50.372Z"
-}
-```
-</details>
