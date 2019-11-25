@@ -170,8 +170,12 @@ app.post('/api/v1/teams', (request, response) => {
     });
 });
 
+app.get("/", (request, response) => {
+  response.send("Please head to https://https://github.com/KVeitch/bring-your-own-backend for documentation");
+});
+
 app.listen(app.get('port'), () => {
   console.log(
-    `${app.locals.title} is running on http://localhost:${app.get('port')}.`
+    `${app.locals.title} is running on https://mls2019-api.herokuapp.com/:${app.get('port')}.`
   );
 });
