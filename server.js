@@ -1,13 +1,26 @@
+// Brings express package into the project allowing endpoints in node 
 const express = require('express');
+// Brings cors middleware allowing for access to the db from different origins.
 const cors = require('cors');
+// Declares app as variable that return the value from invoking express 
 const app = express();
+// Declares environment as a variable and sets is to either the process.env.NODE_ENV or the string development.
+//express() function is a top-level function exported by the express module.
 const environment = process.env.NODE_ENV || 'development';
+// Declares configuration as a variable that sets the knexfile object to the returnd value of environmnet.
 const configuration = require('./knexfile')[environment];
+// Declares database as a variable that is set the return of the knex package given the cinfiguration variable value.
 const database = require('knex')(configuration);
 
+// Sets the value of app.local object property, title to be a string.
+//Values of app.locals properties persist throughout the life of the application.
 app.locals.title = '2019 MLS Teams and Players';
+//invokes the express.json() middleware to parse all incoming requests for the application.
 app.use(express.json());
+// Invokes the cors() middleware to be used by the application.
+//Allows for request to be made from origins that differ from the app's origin.
 app.use(cors());
+
 app.set('port', process.env.PORT || 3001);
 
 app.get('/api/v1/teams', (request, response) => {
