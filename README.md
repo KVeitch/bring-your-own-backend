@@ -2,7 +2,7 @@
 
 This API allows you to retrieve data on the 2019 MLS teams and players.
 ---
-[API Docs with sandbox](https://mls-2019-api-sandbox.herokuapp.com/)
+[API Docs with sandbox](https://kveitch.github.io/byob-front-end/)
 ---
 
 ## API Endpoints
