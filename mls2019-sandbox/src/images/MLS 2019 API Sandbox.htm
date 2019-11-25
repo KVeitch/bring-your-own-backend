@@ -1,0 +1,1855 @@
+<!DOCTYPE html>
+<!-- saved from url=(0022)http://localhost:3000/ -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <link rel="icon" href="http://localhost:3000/favicon.ico">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#000000">
+    <meta name="description" content="Web site created using create-react-app">
+    <link rel="apple-touch-icon" href="http://localhost:3000/apple-touch-icon.png">
+    <link rel="manifest" href="http://localhost:3000/manifest.json">
+    <title>MLS 2019 API Sandbox</title>
+  <style>body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
+</style><style>* {
+  box-sizing: border-box;
+}
+main {
+  padding: 0 10px
+}
+
+table {
+  table-layout: fixed;
+  width: 80%;
+  border: 1px solid #000000;
+  background-color:rgb(223, 223, 223);
+}
+
+thead th:nth-child(1) {
+  width: 20%;
+}
+
+thead th:nth-child(2) {
+  width: 20%;
+}
+
+thead th:nth-child(3) {
+  width: 40%;
+}
+
+
+th, td {
+  padding: 2px;
+  border:1px solid rgb(218, 218, 218);
+  background-color:white;
+  text-align: left;
+}
+
+code{
+  background-color:lightgray;
+}
+
+.object-key-val {
+  padding: 5px;
+  margin: 5px;
+  white-space: pre;
+  width:100%;
+  height:20vh;
+  overflow:scroll;
+}
+
+.div__row {
+  margin-top:10px;
+  display:flex;
+  align-items: center;
+
+}
+.div__row p {
+  font-size: 1.1em;
+}
+button {
+  color: #fff !important;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #322A31;
+  font-size:1em;
+  padding: 20px;
+  border-radius: 5px;
+  display: inline-block;
+  border: none;
+  transition: all 0.4s ease 0s;
+  margin:0 10px;
+  }
+
+button:hover {
+  background: #ed3330;
+  box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+  transition: all 0.4s ease 0s;
+}
+
+.bold {
+  font-style:bold;
+  margin:0 5px
+}
+input {
+  margin:0 10px;
+  width:200px;
+  font-size:1.1em;
+  padding-left:8px;
+}
+input::placeholder {
+  color:#D8791E;
+}
+
+.input__team-id {
+  width:80px;
+}
+.input__roster-id {
+  width:40px;
+}
+
+.input-container{
+  height:58px;
+  margin:0;
+  width:385px;
+}
+.multi-input {
+  width:50%;
+  margin:0;
+}</style><style type="text/css">.react-json-view .copy-to-clipboard-container{vertical-align:top;display:none}.react-json-view .click-to-add,.react-json-view .click-to-edit,.react-json-view .click-to-remove{display:none}.react-json-view .object-content .variable-row:hover .click-to-edit,.react-json-view .object-content .variable-row:hover .click-to-remove,.react-json-view .object-key-val:hover>span>.object-meta-data>.click-to-add,.react-json-view .object-key-val:hover>span>.object-meta-data>.click-to-remove,.react-json-view .object-key-val:hover>span>.object-meta-data>.copy-to-clipboard-container,.react-json-view .variable-row:hover .copy-to-clipboard-container{display:inline-block}</style><style type="text/css">@import url(https://fonts.googleapis.com/css?family=Lato:300,400,700,900);</style><style type="text/css">.huntr-ext-add-job-container .add-job-container {
+  padding: 25px 25px 100px 25px;
+  max-height: 550px;
+}
+.huntr-ext-add-job-container .save-job-footer {
+  width: 300px;
+  position: absolute;
+  bottom: 22px;
+  background-color: #f3f1f5;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+.huntr-ext-add-job-container .btn {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  margin-top: 10px !important;
+  margin-bottom: 10px !important;
+  width: 150px !important;
+}
+.huntr-ext-add-job-container .btn.waiting {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+.huntr-ext-add-job-container .list-item {
+  text-transform: capitalize;
+}
+.huntr-ext-parsed-jobs-container .no-results {
+  font-size: 14px !important;
+  color: rgba(25,4,69,0.7) !important;
+  padding: 40px;
+  text-align: center;
+}
+.huntr-ext-parsed-jobs-container .job-result {
+  padding: 20px 25px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+}
+.huntr-ext-parsed-jobs-container .job-result:hover {
+  background-color: rgba(25,4,69,0.1);
+}
+.huntr-ext-parsed-jobs-container .job-title {
+  font-size: 14px !important;
+  font-weight: bold !important;
+  color: #190445 !important;
+  margin-bottom: 3px !important;
+}
+.huntr-ext-parsed-jobs-container .job-company,
+.huntr-ext-parsed-jobs-container .job-location {
+  max-width: 100px !important;
+}
+.huntr-ext-parsed-jobs-container .job-company {
+  margin-right: 10px !important;
+  font-weight: bold;
+  color: rgba(25,4,69,0.9);
+}
+.huntr-ext-parsed-jobs-container .job-location {
+  color: rgba(25,4,69,0.7);
+}
+.huntr-ext-parsed-jobs-container .job-description {
+  color: rgba(25,4,69,0.4);
+}
+.huntr-ext-parsed-jobs-container .job-company,
+.huntr-ext-parsed-jobs-container .job-description,
+.huntr-ext-parsed-jobs-container .job-location {
+  font-size: 13px;
+}
+.huntr-ext-parsed-jobs-container p {
+  line-height: 15px !important;
+  margin: 0 !important;
+}
+.huntr-ext-parsed-jobs-container span {
+  margin: 0 !important;
+  max-width: 240px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: inline-block;
+}
+.huntr-capitalize {
+  text-transform: capitalize;
+}
+.huntr-error-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  background-color: #ff3569;
+  padding: 15px;
+  font-size: 12px;
+  color: #fff;
+  border-top: 1px solid rgba(0,0,0,0.1);
+  text-align: center;
+  font-family: Lato, sans-serif;
+}
+.huntr-ext-add-job-success-container {
+  padding: 30px;
+  text-align: center;
+}
+.huntr-ext-add-job-success-container .message {
+  height: 180px !important;
+  margin-top: 20px !important;
+  border-bottom: 1px solid #eaeaea !important;
+}
+.huntr-ext-add-job-success-container .message p {
+  font-size: 22px !important;
+  line-height: 50px !important;
+  text-align: center !important;
+}
+.huntr-ext-add-job-success-container .message .huntr-icon {
+  font-size: 45px !important;
+  color: rgba(74,74,74,0.2) !important;
+}
+.huntr-ext-add-job-success-container .huntr-footer {
+  margin-top: 30px;
+}
+.huntr-ext-add-job-success-container .huntr-footer a.btn {
+  color: #fff !important;
+  width: 200px;
+}
+.huntr-ext-add-job-success-container .huntr-footer .btn img {
+  position: absolute;
+  left: 8px;
+  top: 7px;
+  width: 20px;
+  height: 20px;
+  border-radius: 20px;
+}
+.huntr-ext-settings-container {
+  margin-top: 25px;
+  font-family: 'Lato', sans-serif !important;
+  font-size: 16px;
+  text-align: center;
+  color: #4a4a4a;
+  height: 140px;
+  margin-top: 50px;
+}
+.huntr-ext-settings-container p {
+  line-height: 18px;
+}
+.huntr-ext-time-to-upgrade {
+  padding: 35px;
+  text-align: center;
+  color: #6a4feb;
+}
+.huntr-ext-time-to-upgrade .huntr-icon {
+  margin: 10px 0 40px 0;
+  font-size: 60px;
+  color: rgba(106,79,235,0.1);
+}
+#huntr-react-container-2 {
+  position: absolute;
+  display: block !important;
+  font-family: 'Lato', sans-serif;
+}
+#huntr-react-container-2 a,
+#huntr-react-container-2 p,
+#huntr-react-container-2 span,
+#huntr-react-container-2 div {
+  font-family: 'Lato', sans-serif !important;
+}
+#huntr-react-container-2 form {
+  margin: 0;
+  padding: 0;
+}
+#huntr-react-container-2 ::-webkit-scrollbar-button {
+  width: 0px !important;
+  height: 0px !important;
+}
+#huntr-react-container-2 ::-webkit-scrollbar-track {
+  box-shadow: none !important;
+  background-color: "white" !important;
+}
+#huntr-react-container-2 ::-webkit-scrollbar-thumb {
+  background-color: rgba(24,0,69,0.1) !important;
+  border: 4px solid #fff !important;
+  border-radius: 100px !important;
+}
+#huntr-react-container-2 ::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(24,0,69,0.2) !important;
+}
+#huntr-react-container-2 ::-webkit-scrollbar-thumb:active {
+  background-color: rgba(24,0,69,0.2) !important;
+}
+#huntr-react-container-2 ::-webkit-scrollbar {
+  width: 13px !important;
+  height: 20px !important;
+}
+#huntr-react-container-2 .huntr-title {
+  font-size: 22px;
+  font-weight: regular;
+  color: #190445 !important;
+}
+#huntr-react-container-2 .huntr-description {
+  font-size: 15px;
+  font-weight: regular;
+  color: rgba(25,4,69,0.7) !important;
+}
+#huntr-react-container-2 a {
+  cursor: pointer;
+}
+#huntr-react-container-2 .centered {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+}
+#huntr-react-container-2 .field {
+  position: relative;
+}
+#huntr-react-container-2 .field-container .huntr-icon {
+  position: absolute;
+  right: 5px;
+  bottom: 14px;
+  font-size: 16px;
+  color: #d4d4d4;
+  cursor: pointer;
+}
+#huntr-react-container-2 .field-container .input-image {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  right: 5px;
+  bottom: 14px;
+  border-radius: 100%;
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.1);
+}
+#huntr-react-container-2 .hide {
+  visibility: hidden;
+}
+#huntr-react-container-2 .btn {
+  font-family: 'Lato', sans-serif !important;
+  border-radius: 4px !important;
+  font-size: 14px;
+  display: block !important;
+  cursor: pointer !important;
+  text-transform: capitalize !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.2px !important;
+  position: relative;
+  transition: all 0.4s ease-out !important;
+  text-align: center !important;
+  box-shadow: none !important;
+  border: none !important;
+  padding: 0 !important;
+  background-image: none !important;
+  background-repeat: no-repeat !important;
+  text-shadow: none !important;
+  line-height: 37px;
+  box-sizing: border-box !important;
+}
+#huntr-react-container-2 .btn .huntr-icon {
+  position: absolute;
+  right: 15px;
+  top: 13px;
+  color: rgba(255,255,255,0.4);
+  font-size: 16px;
+}
+#huntr-react-container-2 .btn-purple {
+  color: #fff;
+  text-shadow: 0px 1px 4px rgba(0,0,0,0.1);
+  background-color: #6a4feb;
+}
+#huntr-react-container-2 .btn-purple:hover {
+  background-color: #8c35ff;
+}
+#huntr-react-container-2 .btn-purple:disabled {
+  cursor: not-allowed;
+  color: rgba(25,4,69,0.4) !important;
+  background-color: rgba(25,4,69,0.2) !important;
+}
+#huntr-react-container-2 ul {
+  margin: 0px;
+  padding: 0px;
+}
+#huntr-react-container-2 ul li {
+  list-style: none;
+}
+#huntr-react-container-2 .location-search .huntr-drop-down-menu span {
+  font-size: 11px;
+  display: inline-block;
+}
+#huntr-react-container-2 .truncate {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#huntr-react-container-2 .huntr-drop-down-menu {
+  color: #4a4a4a;
+  font-family: 'Lato', sans-serif;
+  background-color: #fff;
+  position: absolute;
+  width: 100%;
+  border-radius: 4px;
+  font-size: 13px;
+  box-shadow: 0px 0px 4px rgba(0,0,0,0.1);
+  z-index: 1;
+  border: 1px solid #ddd;
+  max-height: 250px;
+  overflow-y: auto;
+}
+#huntr-react-container-2 .huntr-drop-down-menu .huntr-ddmenu-footer {
+  padding: 10px 10px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+  cursor: pointer;
+}
+#huntr-react-container-2 .huntr-drop-down-menu .huntr-ddmenu-footer .huntr-icon {
+  margin-right: 10px;
+}
+#huntr-react-container-2 .huntr-logo img {
+  width: 16px;
+  position: relative;
+  top: -5px;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu {
+  width: 100%;
+  position: relative;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+#huntr-react-container-2 .huntr-ext-nav-menu .nav-tooltip {
+  display: none;
+  position: absolute;
+  background-color: #7f7b92;
+  color: #fff;
+  left: -45px;
+  font-size: 11px;
+  width: 90px;
+  line-height: 30px;
+  padding: 0px 15px;
+  border-radius: 20px;
+  top: -25px;
+  text-align: center;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu .nav-tooltip:before {
+  content: '';
+  display: block;
+  width: 0;
+  height: 0;
+  position: absolute;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid #7f7b92;
+  top: 30px;
+  left: 45px;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu ul li {
+  position: relative;
+  padding: 0px;
+  cursor: pointer;
+  margin: 0px 31px 0px 0px;
+  font-size: 17px;
+  display: inline-block;
+  color: #b5b5b5;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu ul li a,
+#huntr-react-container-2 .huntr-ext-nav-menu ul li span {
+  line-height: 50px;
+  vertical-align: middle;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu ul li:first-child {
+  margin-left: 20px;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu ul li:last-child {
+  margin: 0px;
+}
+#huntr-react-container-2 .huntr-ext-nav-menu ul li:hover {
+  color: rgba(0,0,0,0.8);
+}
+#huntr-react-container-2 .huntr-ext-nav-menu ul li:hover .nav-tooltip {
+  display: inline-block;
+}
+#huntr-react-container-2 .huntr-ext-top-menu {
+  background-color: #f3f1f5;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  position: relative;
+  width: 100%;
+  color: rgba(0,0,0,0.25);
+}
+#huntr-react-container-2 .huntr-ext-top-menu img {
+  max-width: 60px;
+  box-sizing: content-box;
+  padding: 12px 0px 10px 12px;
+}
+#huntr-react-container-2 p,
+#huntr-react-container-2 span {
+  text-shadow: none;
+}
+#huntr-react-container-2 p.huntr-icon,
+#huntr-react-container-2 span.huntr-icon {
+  font-family: 'simple-line-icons' !important;
+}
+#huntr-react-container-2 p.huntr-icon:before,
+#huntr-react-container-2 span.huntr-icon:before {
+  font-family: 'simple-line-icons' !important;
+}
+#huntr-react-container-2 h1 {
+  font-family: 'Lato', sans-serif !important;
+  text-transform: uppercase !important;
+  color: #4a4a4a !important;
+  letter-spacing: 5px !important;
+  font-size: 16px !important;
+  font-weight: 900;
+}
+#huntr-react-container-2 .huntr-ext-app-container {
+  position: fixed;
+  right: 30px;
+  top: 30px;
+  z-index: 100000;
+  max-height: 600px;
+  min-height: 300px;
+}
+#huntr-react-container-2 .huntr-ext-app-container .inner-container {
+  height: 100%;
+  background-color: #fff;
+  width: 300px;
+  box-shadow: 0px 0px 10px rgba(0,0,0,0.2);
+  outline: 1px solid rgba(0,0,0,0.1);
+}
+#huntr-react-container-2 .huntr-ext-minimize {
+  position: absolute;
+  right: 10px;
+  top: 0px;
+  font-size: 35px;
+  font-family: 'Lato', sans-serif;
+  line-height: normal;
+  transform: rotate(45deg);
+  cursor: pointer;
+  color: rgba(74,74,74,0.2);
+  font-weight: 400;
+  z-index: 1;
+}
+#huntr-react-container-2 .huntr-ext-minimize:hover {
+  color: rgba(74,74,74,0.7);
+}
+#huntr-react-container-2 .editable-text-field {
+  width: 100%;
+}
+#huntr-react-container-2 .huntr-ext-app-mini {
+  background-color: #6a4feb;
+  width: 50px;
+  height: 50px;
+  border-radius: 50px;
+  position: fixed;
+  z-index: 10000;
+  bottom: 30px;
+  right: 30px;
+  cursor: pointer;
+}
+#huntr-react-container-2 .huntr-ext-app-mini:after {
+  content: 'h';
+}
+#huntr-react-container-2 .huntr-ext-component-container h1 {
+  text-align: center;
+  margin: 60px 0px;
+}
+#huntr-react-container-2 .huntr-ext-component-container .drop-down-button {
+  font-family: 'Lato', sans-serif !important;
+  -webkit-appearance: none !important;
+  outline: 0 !important;
+  border-radius: 2px !important;
+  box-sizing: border-box !important;
+  font-family: 'Lato', sans-serif !important;
+  width: 100% !important;
+  padding: 12px 12px !important;
+  font-size: 14px !important;
+  color: rgba(74,74,74,0.9) !important;
+  margin-bottom: 14px !important;
+  font-weight: 400 !important;
+  background-color: #fafafa !important;
+  border: 1px solid #dcdcdc !important;
+  transition: none !important;
+  text-align: left !important;
+  cursor: pointer !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container input {
+  font-size: 16px;
+  height: 35px;
+}
+#huntr-react-container-2 .huntr-ext-component-container input::-webkit-input-placeholder {
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  font-family: 'Lato', sans-serif !important;
+  color: rgba(24,0,69,0.3) !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container textarea {
+  font-size: 14px;
+  height: 130px;
+}
+#huntr-react-container-2 .huntr-ext-component-container textarea::-webkit-input-placeholder {
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  font-family: 'Lato', sans-serif !important;
+  color: rgba(24,0,69,0.3) !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container input,
+#huntr-react-container-2 .huntr-ext-component-container textarea {
+  box-shadow: none;
+  background-color: #fff;
+  background-image: none !important;
+  outline: 0;
+  box-sizing: border-box;
+  font-family: 'Lato', sans-serif !important;
+  letter-spacing: 0px;
+  width: 100%;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  box-shadow: none !important;
+  border-bottom: 1px solid #eee !important;
+  font-weight: 400 !important;
+  margin: 0px !important;
+  color: rgba(25,4,69,0.7) !important;
+  border-radius: 0 !important;
+  line-height: normal !important;
+  padding: 20px 0 !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container input.clean,
+#huntr-react-container-2 .huntr-ext-component-container textarea.clean {
+  border: none !important;
+  height: 100%;
+  padding: 0 !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container input.clean:focus,
+#huntr-react-container-2 .huntr-ext-component-container textarea.clean:focus,
+#huntr-react-container-2 .huntr-ext-component-container input.clean::selection,
+#huntr-react-container-2 .huntr-ext-component-container textarea.clean::selection {
+  border-bottom: none !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container input:focus,
+#huntr-react-container-2 .huntr-ext-component-container textarea:focus,
+#huntr-react-container-2 .huntr-ext-component-container input::selection,
+#huntr-react-container-2 .huntr-ext-component-container textarea::selection {
+  outline: 0;
+  border-bottom: 1px solid #8c35ff !important;
+  background-color: #fff !important;
+}
+#huntr-react-container-2 .huntr-ext-component-container input::selection,
+#huntr-react-container-2 .huntr-ext-component-container textarea::selection {
+  background-color: #8c35ff !important;
+  color: #fff;
+}
+.huntr-loader ::after,
+.huntr-loader ::before {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.huntr-loader {
+  display: block;
+  height: 50px;
+  width: 50px;
+  animation: huntr-loader-1 3s linear infinite;
+  -webkit-animation: huntr-loader-1 3s linear infinite;
+}
+@-webkit-keyframes huntr-loader-1 {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.huntr-loader span {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  height: 50px;
+  width: 50px;
+  clip: rect(0px, 50px, 50px, 0);
+  -webkit-animation: huntr-loader-2 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  animation: huntr-loader-2 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+@-webkit-keyframes huntr-loader-2 {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.huntr-loader span::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  height: 50px;
+  width: 50px;
+  border: 4px solid transparent;
+  border-top: 4px solid #6a4feb;
+  border-radius: 50%;
+  -webkit-animation: huntr-loader-3 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+  animation: huntr-loader-3 1.5s cubic-bezier(0.77, 0, 0.175, 1) infinite;
+}
+@-webkit-keyframes huntr-loader-3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+.huntr-loader span::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  margin: auto;
+  height: 50px;
+  width: 50px;
+  border: 4px solid rgba(106,79,235,0.2);
+  border-radius: 50%;
+}
+@-moz-keyframes huntr-loader-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes huntr-loader-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes huntr-loader-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes huntr-loader-1 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes huntr-loader-2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes huntr-loader-2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes huntr-loader-2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes huntr-loader-2 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-moz-keyframes huntr-loader-3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes huntr-loader-3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@-o-keyframes huntr-loader-3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+@keyframes huntr-loader-3 {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+</style><style type="text/css">/*!
+ * Quill Editor v1.3.0
+ * https://quilljs.com/
+ * Copyright (c) 2014, Jason Chen
+ * Copyright (c) 2013, salesforce.com
+ */
+.ql-container span,
+.ql-container li,
+.ql-container ul,
+.ql-container div,
+.ql-container strong,
+.ql-container b,
+.ql-container h1,
+.ql-container h2,
+.ql-container h3,
+.ql-container p  {
+  font-size: 14px;
+  font-family: Lato, Arial, sans-serif !important;
+  color: #180045 !important;
+}
+
+.ql-container {
+  box-sizing: border-box;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 13px;
+  height: 100%;
+  margin: 0px;
+  position: relative;
+}
+.ql-container.ql-disabled .ql-tooltip {
+  visibility: hidden;
+}
+.ql-container.ql-disabled .ql-editor ul[data-checked] > li::before {
+  pointer-events: none;
+}
+.ql-clipboard {
+  left: -100000px;
+  height: 1px;
+  overflow-y: hidden;
+  position: absolute;
+  top: 50%;
+}
+.ql-clipboard p {
+  margin: 0;
+  padding: 0;
+}
+.ql-editor {
+  box-sizing: border-box;
+  line-height: 1.42;
+  height: 100% !important;
+  outline: none;
+  overflow-y: auto;
+  padding: 12px 25px;
+  tab-size: 4;
+  -moz-tab-size: 4;
+  text-align: left;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+.ql-editor > * {
+  cursor: text;
+}
+.ql-editor p,
+.ql-editor ol,
+.ql-editor ul,
+.ql-editor pre,
+.ql-editor blockquote,
+.ql-editor h1,
+.ql-editor h2,
+.ql-editor h3,
+.ql-editor h4,
+.ql-editor h5,
+.ql-editor h6 {
+  margin: 0;
+  padding: 0;
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor ol,
+.ql-editor ul {
+  padding-left: 1.5em;
+}
+.ql-editor ol > li,
+.ql-editor ul > li {
+  list-style-type: none;
+}
+.ql-editor ul > li::before {
+  content: '\2022';
+}
+.ql-editor ul[data-checked=true],
+.ql-editor ul[data-checked=false] {
+  pointer-events: none;
+}
+.ql-editor ul[data-checked=true] > li *,
+.ql-editor ul[data-checked=false] > li * {
+  pointer-events: all;
+}
+.ql-editor ul[data-checked=true] > li::before,
+.ql-editor ul[data-checked=false] > li::before {
+  color: #777;
+  cursor: pointer;
+  pointer-events: all;
+}
+.ql-editor ul[data-checked=true] > li::before {
+  content: '\2611';
+}
+.ql-editor ul[data-checked=false] > li::before {
+  content: '\2610';
+}
+.ql-editor li::before {
+  display: inline-block;
+  white-space: nowrap;
+  width: 1.2em;
+}
+.ql-editor li:not(.ql-direction-rtl)::before {
+  margin-left: -1.5em;
+  margin-right: 0.3em;
+  text-align: right;
+}
+.ql-editor li.ql-direction-rtl::before {
+  margin-left: 0.3em;
+  margin-right: -1.5em;
+}
+.ql-editor ol li:not(.ql-direction-rtl),
+.ql-editor ul li:not(.ql-direction-rtl) {
+  padding-left: 1.5em;
+}
+.ql-editor ol li.ql-direction-rtl,
+.ql-editor ul li.ql-direction-rtl {
+  padding-right: 1.5em;
+}
+.ql-editor ol li {
+  counter-reset: list-1 list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+  counter-increment: list-0;
+}
+.ql-editor ol li:before {
+  content: counter(list-0, decimal) '. ';
+}
+.ql-editor ol li.ql-indent-1 {
+  counter-increment: list-1;
+}
+.ql-editor ol li.ql-indent-1:before {
+  content: counter(list-1, lower-alpha) '. ';
+}
+.ql-editor ol li.ql-indent-1 {
+  counter-reset: list-2 list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor ol li.ql-indent-2 {
+  counter-increment: list-2;
+}
+.ql-editor ol li.ql-indent-2:before {
+  content: counter(list-2, lower-roman) '. ';
+}
+.ql-editor ol li.ql-indent-2 {
+  counter-reset: list-3 list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor ol li.ql-indent-3 {
+  counter-increment: list-3;
+}
+.ql-editor ol li.ql-indent-3:before {
+  content: counter(list-3, decimal) '. ';
+}
+.ql-editor ol li.ql-indent-3 {
+  counter-reset: list-4 list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor ol li.ql-indent-4 {
+  counter-increment: list-4;
+}
+.ql-editor ol li.ql-indent-4:before {
+  content: counter(list-4, lower-alpha) '. ';
+}
+.ql-editor ol li.ql-indent-4 {
+  counter-reset: list-5 list-6 list-7 list-8 list-9;
+}
+.ql-editor ol li.ql-indent-5 {
+  counter-increment: list-5;
+}
+.ql-editor ol li.ql-indent-5:before {
+  content: counter(list-5, lower-roman) '. ';
+}
+.ql-editor ol li.ql-indent-5 {
+  counter-reset: list-6 list-7 list-8 list-9;
+}
+.ql-editor ol li.ql-indent-6 {
+  counter-increment: list-6;
+}
+.ql-editor ol li.ql-indent-6:before {
+  content: counter(list-6, decimal) '. ';
+}
+.ql-editor ol li.ql-indent-6 {
+  counter-reset: list-7 list-8 list-9;
+}
+.ql-editor ol li.ql-indent-7 {
+  counter-increment: list-7;
+}
+.ql-editor ol li.ql-indent-7:before {
+  content: counter(list-7, lower-alpha) '. ';
+}
+.ql-editor ol li.ql-indent-7 {
+  counter-reset: list-8 list-9;
+}
+.ql-editor ol li.ql-indent-8 {
+  counter-increment: list-8;
+}
+.ql-editor ol li.ql-indent-8:before {
+  content: counter(list-8, lower-roman) '. ';
+}
+.ql-editor ol li.ql-indent-8 {
+  counter-reset: list-9;
+}
+.ql-editor ol li.ql-indent-9 {
+  counter-increment: list-9;
+}
+.ql-editor ol li.ql-indent-9:before {
+  content: counter(list-9, decimal) '. ';
+}
+.ql-editor .ql-indent-1:not(.ql-direction-rtl) {
+  padding-left: 3em;
+}
+.ql-editor li.ql-indent-1:not(.ql-direction-rtl) {
+  padding-left: 4.5em;
+}
+.ql-editor .ql-indent-1.ql-direction-rtl.ql-align-right {
+  padding-right: 3em;
+}
+.ql-editor li.ql-indent-1.ql-direction-rtl.ql-align-right {
+  padding-right: 4.5em;
+}
+.ql-editor .ql-indent-2:not(.ql-direction-rtl) {
+  padding-left: 6em;
+}
+.ql-editor li.ql-indent-2:not(.ql-direction-rtl) {
+  padding-left: 7.5em;
+}
+.ql-editor .ql-indent-2.ql-direction-rtl.ql-align-right {
+  padding-right: 6em;
+}
+.ql-editor li.ql-indent-2.ql-direction-rtl.ql-align-right {
+  padding-right: 7.5em;
+}
+.ql-editor .ql-indent-3:not(.ql-direction-rtl) {
+  padding-left: 9em;
+}
+.ql-editor li.ql-indent-3:not(.ql-direction-rtl) {
+  padding-left: 10.5em;
+}
+.ql-editor .ql-indent-3.ql-direction-rtl.ql-align-right {
+  padding-right: 9em;
+}
+.ql-editor li.ql-indent-3.ql-direction-rtl.ql-align-right {
+  padding-right: 10.5em;
+}
+.ql-editor .ql-indent-4:not(.ql-direction-rtl) {
+  padding-left: 12em;
+}
+.ql-editor li.ql-indent-4:not(.ql-direction-rtl) {
+  padding-left: 13.5em;
+}
+.ql-editor .ql-indent-4.ql-direction-rtl.ql-align-right {
+  padding-right: 12em;
+}
+.ql-editor li.ql-indent-4.ql-direction-rtl.ql-align-right {
+  padding-right: 13.5em;
+}
+.ql-editor .ql-indent-5:not(.ql-direction-rtl) {
+  padding-left: 15em;
+}
+.ql-editor li.ql-indent-5:not(.ql-direction-rtl) {
+  padding-left: 16.5em;
+}
+.ql-editor .ql-indent-5.ql-direction-rtl.ql-align-right {
+  padding-right: 15em;
+}
+.ql-editor li.ql-indent-5.ql-direction-rtl.ql-align-right {
+  padding-right: 16.5em;
+}
+.ql-editor .ql-indent-6:not(.ql-direction-rtl) {
+  padding-left: 18em;
+}
+.ql-editor li.ql-indent-6:not(.ql-direction-rtl) {
+  padding-left: 19.5em;
+}
+.ql-editor .ql-indent-6.ql-direction-rtl.ql-align-right {
+  padding-right: 18em;
+}
+.ql-editor li.ql-indent-6.ql-direction-rtl.ql-align-right {
+  padding-right: 19.5em;
+}
+.ql-editor .ql-indent-7:not(.ql-direction-rtl) {
+  padding-left: 21em;
+}
+.ql-editor li.ql-indent-7:not(.ql-direction-rtl) {
+  padding-left: 22.5em;
+}
+.ql-editor .ql-indent-7.ql-direction-rtl.ql-align-right {
+  padding-right: 21em;
+}
+.ql-editor li.ql-indent-7.ql-direction-rtl.ql-align-right {
+  padding-right: 22.5em;
+}
+.ql-editor .ql-indent-8:not(.ql-direction-rtl) {
+  padding-left: 24em;
+}
+.ql-editor li.ql-indent-8:not(.ql-direction-rtl) {
+  padding-left: 25.5em;
+}
+.ql-editor .ql-indent-8.ql-direction-rtl.ql-align-right {
+  padding-right: 24em;
+}
+.ql-editor li.ql-indent-8.ql-direction-rtl.ql-align-right {
+  padding-right: 25.5em;
+}
+.ql-editor .ql-indent-9:not(.ql-direction-rtl) {
+  padding-left: 27em;
+}
+.ql-editor li.ql-indent-9:not(.ql-direction-rtl) {
+  padding-left: 28.5em;
+}
+.ql-editor .ql-indent-9.ql-direction-rtl.ql-align-right {
+  padding-right: 27em;
+}
+.ql-editor li.ql-indent-9.ql-direction-rtl.ql-align-right {
+  padding-right: 28.5em;
+}
+.ql-editor .ql-video {
+  display: block;
+  max-width: 100%;
+}
+.ql-editor .ql-video.ql-align-center {
+  margin: 0 auto;
+}
+.ql-editor .ql-video.ql-align-right {
+  margin: 0 0 0 auto;
+}
+.ql-editor .ql-bg-black {
+  background-color: #000;
+}
+.ql-editor .ql-bg-red {
+  background-color: #e60000;
+}
+.ql-editor .ql-bg-orange {
+  background-color: #f90;
+}
+.ql-editor .ql-bg-yellow {
+  background-color: #ff0;
+}
+.ql-editor .ql-bg-green {
+  background-color: #008a00;
+}
+.ql-editor .ql-bg-blue {
+  background-color: #06c;
+}
+.ql-editor .ql-bg-purple {
+  background-color: #93f;
+}
+.ql-editor .ql-color-white {
+  color: #fff;
+}
+.ql-editor .ql-color-red {
+  color: #e60000;
+}
+.ql-editor .ql-color-orange {
+  color: #f90;
+}
+.ql-editor .ql-color-yellow {
+  color: #ff0;
+}
+.ql-editor .ql-color-green {
+  color: #008a00;
+}
+.ql-editor .ql-color-blue {
+  color: #06c;
+}
+.ql-editor .ql-color-purple {
+  color: #93f;
+}
+.ql-editor .ql-font-serif {
+  font-family: Georgia, Times New Roman, serif;
+}
+.ql-editor .ql-font-monospace {
+  font-family: Monaco, Courier New, monospace;
+}
+.ql-editor .ql-size-small {
+  font-size: 0.75em;
+}
+.ql-editor .ql-size-large {
+  font-size: 1.5em;
+}
+.ql-editor .ql-size-huge {
+  font-size: 2.5em;
+}
+.ql-editor .ql-direction-rtl {
+  direction: rtl;
+  text-align: inherit;
+}
+.ql-editor .ql-align-center {
+  text-align: center;
+}
+.ql-editor .ql-align-justify {
+  text-align: justify;
+}
+.ql-editor .ql-align-right {
+  text-align: right;
+}
+.ql-editor .ql-embed-selected {
+  border: 1px solid #777;
+  user-select: none;
+}
+.ql-editor.ql-blank::before {
+  color: rgba(0,0,0,0.6);
+  content: attr(data-placeholder);
+  font-style: italic;
+  pointer-events: none;
+  position: absolute;
+}
+.ql-snow.ql-toolbar:after,
+.ql-snow .ql-toolbar:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+.ql-snow.ql-toolbar button,
+.ql-snow .ql-toolbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: inline-block;
+  float: left;
+  height: 24px;
+  padding: 3px 5px;
+  width: 28px;
+  box-shadow: none;
+  min-height: 1em;
+}
+.ql-snow.ql-toolbar button svg,
+.ql-snow .ql-toolbar button svg {
+  float: left;
+  height: 100%;
+}
+.ql-snow.ql-toolbar button:active:hover,
+.ql-snow .ql-toolbar button:active:hover {
+  outline: none;
+}
+.ql-snow.ql-toolbar input.ql-image[type=file],
+.ql-snow .ql-toolbar input.ql-image[type=file] {
+  display: none;
+}
+.ql-snow.ql-toolbar button:hover,
+.ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button:focus,
+.ql-snow .ql-toolbar button:focus,
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow .ql-toolbar button.ql-active,
+.ql-snow.ql-toolbar .ql-picker-label:hover,
+.ql-snow .ql-toolbar .ql-picker-label:hover,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active,
+.ql-snow.ql-toolbar .ql-picker-item:hover,
+.ql-snow .ql-toolbar .ql-picker-item:hover,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected {
+  color: #06c;
+}
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button:focus .ql-fill,
+.ql-snow .ql-toolbar button:focus .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
+.ql-snow .ql-toolbar button.ql-active .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-fill,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-fill,
+.ql-snow.ql-toolbar button:hover .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar button:hover .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar button:focus .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar button:focus .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke.ql-fill,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke.ql-fill {
+  fill: #06c;
+}
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button:focus .ql-stroke,
+.ql-snow .ql-toolbar button:focus .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke,
+.ql-snow.ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar button:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar button:focus .ql-stroke-miter,
+.ql-snow .ql-toolbar button:focus .ql-stroke-miter,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-label:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-label.ql-active .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-item:hover .ql-stroke-miter,
+.ql-snow.ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter,
+.ql-snow .ql-toolbar .ql-picker-item.ql-selected .ql-stroke-miter {
+  stroke: #06c;
+}
+@media (pointer: coarse) {
+  .ql-snow.ql-toolbar button:hover:not(.ql-active),
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) {
+    color: #444;
+  }
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-fill,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-fill,
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke.ql-fill {
+    fill: #444;
+  }
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke,
+  .ql-snow.ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter,
+  .ql-snow .ql-toolbar button:hover:not(.ql-active) .ql-stroke-miter {
+    stroke: #444;
+  }
+}
+.ql-snow {
+  box-sizing: border-box;
+}
+.ql-snow * {
+  box-sizing: border-box;
+}
+.ql-snow .ql-hidden {
+  display: none;
+}
+.ql-snow .ql-out-bottom,
+.ql-snow .ql-out-top {
+  visibility: hidden;
+}
+.ql-snow .ql-tooltip {
+  position: absolute;
+  transform: translateY(10px);
+}
+.ql-snow .ql-tooltip a {
+  cursor: pointer;
+  text-decoration: none;
+}
+.ql-snow .ql-tooltip.ql-flip {
+  transform: translateY(-10px);
+}
+.ql-snow .ql-formats {
+  display: inline-block;
+  vertical-align: middle;
+}
+.ql-snow .ql-formats:after {
+  clear: both;
+  content: '';
+  display: table;
+}
+.ql-snow .ql-stroke {
+  fill: none;
+  stroke: #444;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+.ql-snow .ql-stroke-miter {
+  fill: none;
+  stroke: #444;
+  stroke-miterlimit: 10;
+  stroke-width: 2;
+}
+.ql-snow .ql-fill,
+.ql-snow .ql-stroke.ql-fill {
+  fill: #444;
+}
+.ql-snow .ql-empty {
+  fill: none;
+}
+.ql-snow .ql-even {
+  fill-rule: evenodd;
+}
+.ql-snow .ql-thin,
+.ql-snow .ql-stroke.ql-thin {
+  stroke-width: 1;
+}
+.ql-snow .ql-transparent {
+  opacity: 0.4;
+}
+.ql-snow .ql-direction svg:last-child {
+  display: none;
+}
+.ql-snow .ql-direction.ql-active svg:last-child {
+  display: inline;
+}
+.ql-snow .ql-direction.ql-active svg:first-child {
+  display: none;
+}
+.ql-snow .ql-editor h1 {
+  font-size: 2em;
+}
+.ql-snow .ql-editor h2 {
+  font-size: 1.5em;
+}
+.ql-snow .ql-editor h3 {
+  font-size: 1.17em;
+}
+.ql-snow .ql-editor h4 {
+  font-size: 1em;
+}
+.ql-snow .ql-editor h5 {
+  font-size: 0.83em;
+}
+.ql-snow .ql-editor h6 {
+  font-size: 0.67em;
+}
+.ql-snow .ql-editor a {
+  text-decoration: underline;
+}
+.ql-snow .ql-editor blockquote {
+  border-left: 4px solid #ccc;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 16px;
+}
+.ql-snow .ql-editor code,
+.ql-snow .ql-editor pre {
+  background-color: #f0f0f0;
+  border-radius: 3px;
+}
+.ql-snow .ql-editor pre {
+  white-space: pre-wrap;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 5px 10px;
+}
+.ql-snow .ql-editor code {
+  font-size: 85%;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+.ql-snow .ql-editor code:before,
+.ql-snow .ql-editor code:after {
+  content: "\A0";
+  letter-spacing: -2px;
+}
+.ql-snow .ql-editor pre.ql-syntax {
+  background-color: #23241f;
+  color: #f8f8f2;
+  overflow: visible;
+}
+.ql-snow .ql-editor img {
+  max-width: 100%;
+}
+.ql-snow .ql-picker {
+  color: #444;
+  display: inline-block;
+  float: left;
+  font-size: 14px;
+  font-weight: 500;
+  height: 24px;
+  position: relative;
+  vertical-align: middle;
+}
+.ql-snow .ql-picker-label {
+  cursor: pointer;
+  display: inline-block;
+  height: 100%;
+  padding-left: 8px;
+  padding-right: 2px;
+  position: relative;
+  width: 100%;
+}
+.ql-snow .ql-picker-label::before {
+  display: inline-block;
+  line-height: 22px;
+}
+.ql-snow .ql-picker-options {
+  background-color: #fff;
+  display: none;
+  min-width: 100%;
+  padding: 4px 8px;
+  position: absolute;
+  white-space: nowrap;
+}
+.ql-snow .ql-picker-options .ql-picker-item {
+  cursor: pointer;
+  display: block;
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
+.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  color: #ccc;
+  z-index: 2;
+}
+.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-fill {
+  fill: #ccc;
+}
+.ql-snow .ql-picker.ql-expanded .ql-picker-label .ql-stroke {
+  stroke: #ccc;
+}
+.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  display: block;
+  margin-top: -1px;
+  top: 100%;
+  z-index: 1;
+}
+.ql-snow .ql-color-picker,
+.ql-snow .ql-icon-picker {
+  width: 28px;
+}
+.ql-snow .ql-color-picker .ql-picker-label,
+.ql-snow .ql-icon-picker .ql-picker-label {
+  padding: 2px 4px;
+}
+.ql-snow .ql-color-picker .ql-picker-label svg,
+.ql-snow .ql-icon-picker .ql-picker-label svg {
+  right: 4px;
+}
+.ql-snow .ql-icon-picker .ql-picker-options {
+  padding: 4px 0px;
+}
+.ql-snow .ql-icon-picker .ql-picker-item {
+  height: 24px;
+  width: 24px;
+  padding: 2px 4px;
+}
+.ql-snow .ql-color-picker .ql-picker-options {
+  padding: 3px 5px;
+  width: 152px;
+}
+.ql-snow .ql-color-picker .ql-picker-item {
+  border: 1px solid transparent;
+  float: left;
+  height: 16px;
+  margin: 2px;
+  padding: 0px;
+  width: 16px;
+}
+.ql-snow .ql-picker:not(.ql-color-picker):not(.ql-icon-picker) svg {
+  position: absolute;
+  margin-top: -9px;
+  right: 0;
+  top: 50%;
+  width: 18px;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-label]:not([data-label=''])::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-label]:not([data-label=''])::before,
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-label]:not([data-label=''])::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-label]:not([data-label=''])::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-label]:not([data-label=''])::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-label]:not([data-label=''])::before {
+  content: attr(data-label);
+}
+.ql-snow .ql-picker.ql-header {
+  width: 98px;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content: 'Normal';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: 'Heading 1';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: 'Heading 2';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: 'Heading 3';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: 'Heading 4';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  content: 'Heading 5';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  content: 'Heading 6';
+}
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  font-size: 2em;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  font-size: 1.5em;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  font-size: 1.17em;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  font-size: 1em;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  font-size: 0.83em;
+}
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  font-size: 0.67em;
+}
+.ql-snow .ql-picker.ql-font {
+  width: 108px;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: 'Sans Serif';
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=serif]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
+  content: 'Serif';
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value=monospace]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
+  content: 'Monospace';
+}
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=serif]::before {
+  font-family: Georgia, Times New Roman, serif;
+}
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value=monospace]::before {
+  font-family: Monaco, Courier New, monospace;
+}
+.ql-snow .ql-picker.ql-size {
+  width: 98px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: 'Normal';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=small]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+  content: 'Small';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=large]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
+  content: 'Large';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value=huge]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
+  content: 'Huge';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=small]::before {
+  font-size: 10px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=large]::before {
+  font-size: 18px;
+}
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value=huge]::before {
+  font-size: 32px;
+}
+.ql-snow .ql-color-picker.ql-background .ql-picker-item {
+  background-color: #fff;
+}
+.ql-snow .ql-color-picker.ql-color .ql-picker-item {
+  background-color: #000;
+}
+.ql-toolbar.ql-snow {
+  border-bottom: 1px solid #ECE9F2;
+  box-sizing: border-box;
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  padding: 8px;
+}
+.ql-toolbar.ql-snow .ql-formats {
+  margin-right: 15px;
+}
+.ql-toolbar.ql-snow .ql-picker-label {
+  border: 1px solid transparent;
+}
+.ql-toolbar.ql-snow .ql-picker-options {
+  border: 1px solid transparent;
+  box-shadow: rgba(0,0,0,0.2) 0 2px 8px;
+}
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-label {
+  border-color: #ccc;
+}
+.ql-toolbar.ql-snow .ql-picker.ql-expanded .ql-picker-options {
+  border-color: #ccc;
+}
+.ql-toolbar.ql-snow .ql-color-picker .ql-picker-item.ql-selected,
+.ql-toolbar.ql-snow .ql-color-picker .ql-picker-item:hover {
+  border-color: #000;
+}
+.ql-toolbar.ql-snow + .ql-container.ql-snow {
+  border-top: 0px;
+  padding-bottom: 40px;
+}
+.ql-snow .ql-tooltip {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 5px #ddd;
+  color: #444;
+  padding: 5px 12px;
+  white-space: nowrap;
+}
+.ql-snow .ql-tooltip::before {
+  content: "Visit URL:";
+  line-height: 26px;
+  margin-right: 8px;
+}
+.ql-snow .ql-tooltip input[type=text] {
+  display: none;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  height: 26px;
+  margin: 0px;
+  padding: 3px 5px;
+  width: 170px;
+}
+.ql-snow .ql-tooltip a.ql-preview {
+  display: inline-block;
+  max-width: 200px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  vertical-align: top;
+}
+.ql-snow .ql-tooltip a.ql-action::after {
+  border-right: 1px solid #ccc;
+  content: 'Edit';
+  margin-left: 16px;
+  padding-right: 8px;
+}
+.ql-snow .ql-tooltip a.ql-remove::before {
+  content: 'Remove';
+  margin-left: 8px;
+}
+.ql-snow .ql-tooltip a {
+  line-height: 26px;
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-preview,
+.ql-snow .ql-tooltip.ql-editing a.ql-remove {
+  display: none;
+}
+.ql-snow .ql-tooltip.ql-editing input[type=text] {
+  display: inline-block;
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+  border-right: 0px;
+  content: 'Save';
+  padding-right: 0px;
+}
+.ql-snow .ql-tooltip[data-mode=link]::before {
+  content: "Enter link:";
+}
+.ql-snow .ql-tooltip[data-mode=formula]::before {
+  content: "Enter formula:";
+}
+.ql-snow .ql-tooltip[data-mode=video]::before {
+  content: "Enter video:";
+}
+.ql-snow a {
+  color: #06c;
+}
+</style><style type="text/css" media="all" id="my"></style><style type="text/css">@font-face { font-family: 'simple-line-icons'; src: url('chrome-extension://mihdfbecejheednfigjpdacgeilhlmnf/assets/fonts/Simple-Line-Icons.ttf') format('truetype'); }</style><style type="text/css" id="e4771738-6c86-4838-baf1-3fa51793823d">.c63ef988-d873-45a1-9cbb-538d6d35e1e1 { position: relative !important; border-radius: 0.2em !important; padding: 0px !important; margin: 0px !important; }
+
+.f192a09f-4614-4d3a-92e5-6085912f294f .ssh-close { position: absolute; left: -8px; top: -8px; width: 16px; height: 16px; z-index: 999; border: none; background: url("data:image/png;base64,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") no-repeat border-box; animation-duration: 275ms; animation-timing-function: ease-out; box-shadow: none; animation-name: b2c189a0-95c0-4901-9931-3c28c7494a5e; }
+
+.f192a09f-4614-4d3a-92e5-6085912f294f .ssh-close:hover, .f192a09f-4614-4d3a-92e5-6085912f294f .ssh-close:focus { background-image: url("data:image/png;base64,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"); }
+
+@media print {
+  .f192a09f-4614-4d3a-92e5-6085912f294f { box-shadow: unset !important; -webkit-print-color-adjust: exact !important; }
+}
+
+@keyframes b2c189a0-95c0-4901-9931-3c28c7494a5e { 
+  0% { opacity: 0; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes e631901c-2baa-4a65-bc60-b03bedeb943c { 
+  100% { opacity: 0; transform: scale(0.3); }
+}
+
+.f192a09f-4614-4d3a-92e5-6085912f294f { background-color: rgba(238, 238, 238, 0.8); color: rgb(170, 170, 170); font: inherit; box-shadow: rgb(238, 238, 238) 0px 0px 0.35em; text-shadow: none !important; }
+
+.default-red-aa94e3d5-ab2f-4205-b74e-18ce31c7c0ce { box-shadow: rgb(255, 128, 128) 0px 0px 0.35em; background-color: rgba(255, 128, 128, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-orange-da01945e-1964-4d27-8a6c-3331e1fe7f14 { box-shadow: rgb(255, 210, 170) 0px 0px 0.35em; background-color: rgba(255, 210, 170, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-yellow-aaddcf5c-0e41-4f83-8a64-58c91f7c6250 { box-shadow: rgb(255, 255, 170) 0px 0px 0.35em; background-color: rgba(255, 255, 170, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-green-c4d41e0a-e40f-4c3f-91ad-2d66481614c2 { box-shadow: rgb(170, 255, 170) 0px 0px 0.35em; background-color: rgba(170, 255, 170, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-cyan-f88e8827-e652-4d79-a9d9-f6c8b8ec9e2b { box-shadow: rgb(170, 255, 255) 0px 0px 0.35em; background-color: rgba(170, 255, 255, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-purple-c472dcdb-f2b8-41ab-bb1e-2fb293df172a { box-shadow: rgb(255, 170, 255) 0px 0px 0.35em; background-color: rgba(255, 170, 255, 0.8) !important; color: rgb(0, 0, 0) !important; }
+
+.default-grey-da7cb902-89c6-46fe-b0e7-d3b35aaf237a { box-shadow: rgb(119, 119, 119) 0px 0px 0.35em; background-color: rgba(119, 119, 119, 0.8) !important; color: rgb(255, 255, 255) !important; }</style></head>
+  <body cz-shortcut-listen="true"><div id="huntr-react-container-2"><!-- react-empty: 1 --></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"><h1>MLS 2019 API Documentation and Sandbox</h1><main><h2>GET /api/v1/teams</h2><h3>Response Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code></td><td>Unique team identifier.</td></tr><tr><td><code>teamname</code></td><td><code>string</code></td><td>Full name of MLS team.</td></tr><tr><td><code>stadium</code></td><td><code>string</code></td><td>Full name of the team's home stadium.</td></tr><tr><td><code>logoUrl</code></td><td><code>string</code></td><td>URL for the team's logo.</td></tr><tr><td><code>city</code></td><td><code>string</code></td><td>City location of the team's stadium</td></tr></tbody></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/teams</p><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">[</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">]</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>GET /api/v1/teams/:id</h2><h3>Query Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code> / <code>string</code></td><td>Unique team identifier or full team name</td></tr></tbody></table><h3>Response Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code></td><td>Unique team identifier.</td></tr><tr><td><code>teamname</code></td><td><code>string</code></td><td>Full name of MLS team.</td></tr><tr><td><code>stadium</code></td><td><code>string</code></td><td>Full name of the team's home stadium.</td></tr><tr><td><code>logoUrl</code></td><td><code>string</code></td><td>URL for the team's logo.</td></tr><tr><td><code>city</code></td><td><code>string</code></td><td>City location of the team's stadium</td></tr></tbody></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/teams/</p><input class="input__team-id" placeholder=":id" name="teamNum" maxlength="40" value=""><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">{</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">}</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>GET /api/v1/players</h2><h3>Response Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code></td><td>Unique player identifier.</td></tr><tr><td><code>name</code></td><td><code>string</code></td><td>Full name of player.</td></tr><tr><td><code>nationality</code></td><td><code>string</code></td><td>Player's country of origin.</td></tr><tr><td><code>photoUrl</code></td><td><code>string</code></td><td>URL for the player's image.</td></tr><tr><td><code>preferedFoot</code></td><td><code>string</code></td><td>Player's dominate foot.</td></tr><tr><td><code>age</code></td><td><code>number</code></td><td>Player's age in years for the 2019 MLS season.</td></tr><tr><td><code>team</code></td><td><code>string</code></td><td>Player's team at the end of the 2019 MLS season.</td></tr></tbody></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/players</p><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">[</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">]</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>GET /api/v1/players/:id</h2><h3>Query Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code></td><td>Unique player identifier.</td></tr></tbody></table><h3>Response</h3><table><thead><tr><th>Status</th><th>Response</th></tr></thead><tr><th>200</th><th>Returns a specific player object.</th></tr><tr><th>404</th><th><code>"error": "There is a not player with an id of 1000"</code></th></tr></table><h3>Response Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code></td><td>Unique player identifier.</td></tr><tr><td><code>name</code></td><td><code>string</code></td><td>Full name of player.</td></tr><tr><td><code>nationality</code></td><td><code>string</code></td><td>Player's country of origin.</td></tr><tr><td><code>photoUrl</code></td><td><code>string</code></td><td>URL for the player's image.</td></tr><tr><td><code>preferedFoot</code></td><td><code>string</code></td><td>Player's dominate foot.</td></tr><tr><td><code>age</code></td><td><code>number</code></td><td>Player's age in years for the 2019 MLS season.</td></tr><tr><td><code>team</code></td><td><code>string</code></td><td>Player's team at the end of the 2019 MLS season.</td></tr></tbody></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/players/</p><input class="input__player-id" placeholder=":id" name="playerNum" maxlength="40" value=""><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">{</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">}</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>GET /api/v1/teams/:id/roster</h2><h3>Query Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td><code>number</code> / <code>string</code></td><td>Unique team identifier or full team name</td></tr></tbody></table><h3>Response</h3><table><thead><tr><th>Status</th><th>Response</th></tr></thead><tr><th>200</th><th>Returns an array of the player objects associated with a specific team.</th></tr><tr><th>404</th><th><code>error: `Requested team: ${id}. There is no record of that team`</code></th></tr></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/teams/</p><input class="input__roster-id" placeholder=":id" name="rosterNum" maxlength="40" value=""><p>/roster</p><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">[</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">]</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>POST/api/v1/teams</h2><h3>Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Required</th></tr></thead><tbody><tr><td><code>teamname</code></td><td><code>string</code></td><td>Full name of MLS team.</td><td>Yes</td></tr><tr><td><code>stadium</code></td><td><code>string</code></td><td>Full name of the team's home stadium.</td><td>Yes</td></tr><tr><td><code>logoUrl</code></td><td><code>string</code></td><td>URL for the team's logo.</td><td>Yes</td></tr><tr><td><code>city</code></td><td><code>string</code></td><td>City location of the team's stadium</td><td>Yes</td></tr></tbody></table><h3>Response</h3><table><thead><tr><th>Status</th><th>Response</th></tr></thead><tr><th>200</th><th>Returns the new player object.</th></tr><tr><th>422</th><th><code>error: `Expected format: { teamname: &lt;String&gt;, city: &lt;String&gt;, stadium: &lt;Sring&gt;, logoUrl: &lt;String&gt; }. You're missing a "${requiredParameter}" property.` </code></th></tr></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/teams/</p><div class="input-container"><input class="input__teamname multi-input" placeholder="Team Name" name="teamname" value=""><input class="input__city multi-input" placeholder="City" name="city" value=""><input class="input__stadium multi-input" placeholder="Stadium" name="stadium" value=""><input class="input__logoUrl multi-input" placeholder="URL for team logo" name="logoUrl" maxlength="40" value=""></div><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">{</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">}</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>POST /api/v1/players</h2><h2>PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS</h2><h3>Parameters</h3><table><thead><tr><th>Name</th><th>Type</th><th>Description</th><th>Required</th></tr></thead><tbody><tr><td><code>name</code></td><td><code>string</code></td><td>Full name of player.</td><td>Yes</td></tr><tr><td><code>nationality</code></td><td><code>string</code></td><td>Player's country of origin.</td><td>Yes</td></tr><tr><td><code>photoUrl</code></td><td><code>string</code></td><td>URL for the player's image.</td><td>Yes</td></tr><tr><td><code>preferedFoot</code></td><td><code>string</code></td><td>Player's dominate foot.</td><td>Yes</td></tr><tr><td><code>age</code></td><td><code>number</code></td><td>Player's age in years for the 2019 MLS season.</td><td>Yes</td></tr><tr><td><code>team</code></td><td><code>string</code></td><td>Player's team</td><td>Yes</td></tr></tbody></table><h3>Response</h3><table><thead><tr><th>Status</th><th>Response</th></tr></thead><tr><th>200</th><th>Returns a specific player object.</th></tr><tr><th>404</th><th><code>error: `Expected format: { name: &lt;String&gt;, age: &lt;Int&gt;, photoUrl: &lt;String&gt;, nationality: &lt;String&gt;, preferedFoot: &lt;String&gt;, team: &lt;String&gt;, }. You're missing a "${param}" property.`</code></th></tr></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/teams/</p><div class="input-container"><input class="input__teamname multi-input" placeholder="Team Name" name="teamname" value=""><input class="input__city multi-input" placeholder="City" name="city" value=""><input class="input__stadium multi-input" placeholder="Stadium" name="stadium" value=""><input class="input__logoUrl multi-input" placeholder="URL for team logo" name="logoUrl" maxlength="40" value=""></div><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">{</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">}</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div><h2>DELETE /api/v1/players</h2><h3>Response</h3><table><thead><tr><th>Status</th><th>Response</th></tr></thead><tr><th>200</th><th>Player ${id} sucessfully deleted.</th></tr><tr><th>404</th><th><code>No player with the id of ${id}</code></th></tr></table><div class="div__row"><p>Try it:<span class="bold">GET</span> /api/v1/teams</p><button type="button">Go!</button><button type="button">Clear the field</button></div><div class="react-json-view" style="font-family: monospace; cursor: default; background-color: rgb(50, 41, 49); position: relative;"><div class="pretty-json-container object-container"><div class="object-content"><div class="object-key-val"><span><span style="display: inline-block; cursor: pointer;"><div class="icon-container" style="display: inline-block; width: 17px;"><span class="collapsed-icon"><svg viewBox="0 0 15 15" fill="currentColor" style="vertical-align: top; color: rgb(200, 94, 124); height: 1em; width: 1em; padding-left: 2px;"><path d="M0 14l6-6-6-6z"></path></svg></span></div><span style="display: inline-block; color: rgb(255, 255, 255); letter-spacing: 0.5px; vertical-align: top; opacity: 0.85;"><span class="object-key"><span style="vertical-align: top;">"</span><span>root</span><span style="vertical-align: top;">"</span></span><span style="display: inline-block; margin: 0px 5px; color: rgb(255, 255, 255); vertical-align: top;">:</span></span><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255);">[</span></span></span><span class="brace-row"><span style="display: inline-block; cursor: pointer; font-weight: bold; color: rgb(255, 255, 255); padding-left: 0px;">]</span><div class="object-meta-data" style="display: inline-block; padding: 0px 0px 0px 10px;"><span class="object-size" style="color: rgb(152, 148, 152); border-radius: 3px; font-style: italic; margin: 0px 6px 0px 0px; cursor: default;">0 items</span><span class="copy-to-clipboard-container"><span style="cursor: pointer; display: inline;"><span class="copy-icon"><svg viewBox="0 0 40 40" fill="currentColor" preserveAspectRatio="xMidYMid meet" style="vertical-align: top; color: rgb(179, 53, 8); font-size: 15px; margin-right: 3px; height: 1em; width: 1em;"><g><path d="m30 35h-25v-22.5h25v7.5h2.5v-12.5c0-1.4-1.1-2.5-2.5-2.5h-7.5c0-2.8-2.2-5-5-5s-5 2.2-5 5h-7.5c-1.4 0-2.5 1.1-2.5 2.5v27.5c0 1.4 1.1 2.5 2.5 2.5h25c1.4 0 2.5-1.1 2.5-2.5v-5h-2.5v5z m-20-27.5h2.5s2.5-1.1 2.5-2.5 1.1-2.5 2.5-2.5 2.5 1.1 2.5 2.5 1.3 2.5 2.5 2.5h2.5s2.5 1.1 2.5 2.5h-20c0-1.5 1.1-2.5 2.5-2.5z m-2.5 20h5v-2.5h-5v2.5z m17.5-5v-5l-10 7.5 10 7.5v-5h12.5v-5h-12.5z m-17.5 10h7.5v-2.5h-7.5v2.5z m12.5-17.5h-12.5v2.5h12.5v-2.5z m-7.5 5h-5v2.5h5v-2.5z"></path></g></svg></span></span></span></div></span></div></div></div></div></main></div>
+  <script src="./MLS 2019 API Sandbox_files/bundle.js"></script><script src="./MLS 2019 API Sandbox_files/1.chunk.js"></script><script src="./MLS 2019 API Sandbox_files/main.chunk.js"></script><script src="./MLS 2019 API Sandbox_files/main.d7d79ea77ff6c830253a.hot-update.js"></script>
+
+<style>.tb_button {padding:1px;cursor:pointer;border-right: 1px solid #8b8b8b;border-left: 1px solid #FFF;border-bottom: 1px solid #fff;}.tb_button.hover {borer:2px outset #def; background-color: #f8f8f8 !important;}.ws_toolbar {z-index:100000} .ws_toolbar .ws_tb_btn {cursor:pointer;border:1px solid #555;padding:3px}   .tb_highlight{background-color:yellow} .tb_hide {visibility:hidden} .ws_toolbar img {padding:2px;margin:0px}</style></body></html>
