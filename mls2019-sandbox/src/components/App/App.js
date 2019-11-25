@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import FetchDisplay from '../FetchDisplay/FetchDisplay'
-import Nav from '../Nav/Nav';
+// import Nav from '../Nav/Nav';
 import ReactJson from 'react-json-view';
 import {
   getTeams,
@@ -9,10 +8,13 @@ import {
   getPlayers,
   getPlayer,
   getRoster,
+  createTeam,
+  createPlayer,
+  deletePlayer
 } from '../../utils/apiCalls';
 
 class App extends Component {
-  constructor(props) {
+  constructor() {
     super();
     this.state = {
       teamsResponse: [],
@@ -20,152 +22,199 @@ class App extends Component {
       playerResponse: {},
       teamResponse: {},
       rosterResponse: [],
-      postPlayerResponse:{},
-      postTeamResponse:{},
-      deletePlayerResponse:'',
-      deleteTeamResponse:''
+      postPlayerResponse: {},
+      postTeamResponse: {},
+      deletePlayerResponse: '',
+      deletePlayerNum: null,
+      playerNum: null,
+      teamNum: null,
+      rosterNum: null,
+      teamname:null,
+      city:null,
+      logoUrl:null,
+      stadium:null,
+      name:null,
+      nationality:null,
+      photoUrl:null,
+      preferedFoot:null,
+      age:null,
+      team:null
     };
   }
 
-  setTeamsResponse = async () => {
-    console.log('before')
-    const teamsResponse = await getTeams()
-    console.log('after')
-    this.setState({teamsResponse})
+  handleChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
-  setTeamResponse = async () => {};
+  setTeamsResponse = async () => {
+    const teamsResponse = await getTeams();
+    this.setState({ teamsResponse });
+  };
 
-  setPlayersResponse = async () => {};
+  setTeamResponse = async () => {
+    const teamResponse = await getTeam(this.state.teamNum);
+    this.setState({ teamResponse });
+  };
 
-  setPlayerResponse = async () => {};
+  setPlayersResponse = async () => {
+    const playersResponse = await getPlayers();
+    this.setState({ playersResponse });
+  };
 
-  setRoster = async () => {};
+  setPlayerResponse = async () => {
+    const playerResponse = await getPlayer(this.state.playerNum);
+    this.setState({ playerResponse });
+  };
 
-  clearteamsResponse = () => this.setState({ teamsResponse: [] });
+  setRoster = async () => {
+    const rosterResponse = await getRoster(this.state.rosterNum);
+    this.setState({ rosterResponse });
+  };
 
-  clearteamResponse = () => this.setState({ teamResponse: {} });
-
-  clearplayersResponse = () => this.setState({ playersResponse: [] });
-
-  clearplayerResponse = () => this.setState({ playerResponse: {} });
-  
+  clearTeamsResponse = () => this.setState({ teamsResponse: [] });
+  clearTeamResponse = () => this.setState({ teamResponse: {} });
+  clearPlayersResponse = () => this.setState({ playersResponse: [] });
+  clearPlayerResponse = () => this.setState({ playerResponse: {} });
   clearRoster = () => this.setState({ rosterResponse: [] });
+  clearTeam = () => this.setState({ teamname:null, city:null, logoUrl:null, stadium:null })
+  clearDelete= () => this.setState({deletePlayerNum:null, deletePlayerResponse:''});
+  clearPostPlayerResponses = () => {
+    this.setState({name:null, nationality:null, photoUrl:null, preferedFoot:null, age:null, team:null, postPlayerResponses:{}})
+  }
+
+
+  makeTeam = async () => {
+    const {teamname, city, logoUrl, stadium} = this.state
+    const team = { teamname, city, logoUrl, stadium}
+    const postTeamResponse = await createTeam(team);
+    this.setState({ postTeamResponse });
+  }
+
+  makePlayer = async () => {
+    const {name, nationality, photoUrl, preferedFoot, age, team} = this.state;
+    const player = {name, nationality, photoUrl, preferedFoot, age, team}
+    const postPlayerResponse = await createPlayer(player)
+    this.setState({ postPlayerResponse });
+  }
+
+  removePlayer = async () => {
+    const id = this.state.deletePlayerNum
+    const deletePlayerResponse = await deletePlayer(id)
+    this.setState({deletePlayerResponse})
+  }
+
+
+
+
+
+
+
 
   render = () => {
     return (
       <>
-        <h1>MLS 2019 API Documentation and Sandbox</h1>
-        <Nav />
+        <h1 className="main-title">MLS 2019 API Documentation and Sandbox</h1>
+        {/* <Nav /> */}
         <main>
+          <div className='main__div--border'>
           <h2>GET /api/v1/teams</h2>
           <h3>Response Parameters</h3>
           <table>
             <thead>
-              <tr><th>Name</th><th>Type</th><th>Description</th></tr>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
             </thead>
             <tbody>
-              <tr><td><code>id</code></td><td><code>number</code></td>
+              <tr>
+                <td>
+                  <code>id</code>
+                </td>
+                <td>
+                  <code>number</code>
+                </td>
                 <td>Unique team identifier.</td>
               </tr>
               <tr>
-                <td><code>teamname</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>teamname</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>Full name of MLS team.</td>
               </tr>
               <tr>
-                <td><code>stadium</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>stadium</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>Full name of the team's home stadium.</td>
               </tr>
               <tr>
-                <td><code>logoUrl</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>logoUrl</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>URL for the team's logo.</td>
               </tr>
               <tr>
-                <td><code>city</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>city</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>City location of the team's stadium</td>
               </tr>
             </tbody>
           </table>
-          <p>Try it</p>
-          <div>
-          <button type='button' onClick={this.setTeamsResponse}>GET /api/v1/teams</button> 
-          <button type='button' onClick={this.clearTeamsResponse}>Clear the field</button>
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>GET</span> /api/v1/teams
+            </p>
+            <button type='button' onClick={this.setTeamsResponse}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearTeamsResponse}>
+              Clear the field
+            </button>
           </div>
           <ReactJson src={this.state.teamsResponse} theme='hopscotch' />
+          </div>
 
-          <h2>GET /api/v1/teams/:id</h2>
+
+
+          <div className='main__div--border'>
+          <h1>GET /api/v1/teams/:id</h1>
           <h3>Query Parameters</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>id</code></td>
-                  <td><code>number</code> / <code>string</code></td>
-                  <td>
-                    Unique team identifier or full team name 
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code>id</code>
+                </td>
+                <td>
+                  <code>number</code> / <code>string</code>
+                </td>
+                <td>Unique team identifier or full team name</td>
+              </tr>
+            </tbody>
+          </table>
 
-            <h3>Response Parameters</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>id</code></td>
-                  <td><code>number</code></td>
-                  <td>
-                    Unique team identifier.
-                  </td>
-                </tr>
-                <tr>
-                  <td><code>teamname</code></td>
-                  <td><code>string</code></td>
-                  <td>
-                    Full name of MLS team.
-                  </td>
-                </tr>
-                <tr>
-                  <td><code>stadium</code></td>
-                  <td><code>string</code></td>
-                  <td>
-                    Full name of the team's home stadium.
-                  </td>
-                </tr>
-                <tr>
-                  <td><code>logoUrl</code></td>
-                  <td><code>string</code></td>
-                  <td>URL for the team's logo.</td>
-                </tr>
-                <tr>
-                  <td><code>city</code></td>
-                  <td><code>string</code></td>
-                  <td>City location of the team's stadium</td>
-                </tr>
-              </tbody>
-            </table>
-
-          <FetchDisplay display={this.state.teamResponse} syntaxHighlight={this.syntaxHighlight}/>
-
-
-          <h2>GET /api/v1/players</h2>
           <h3>Response Parameters</h3>
           <table>
             <thead>
@@ -177,93 +226,79 @@ class App extends Component {
             </thead>
             <tbody>
               <tr>
-                <td><code>id</code></td>
-                <td><code>number</code></td>
                 <td>
-                  Unique player identifier.
+                  <code>id</code>
                 </td>
-              </tr>
-              <tr>
-                <td><code>name</code></td>
-                <td><code>string</code></td>
                 <td>
-                  Full name of player.
+                  <code>number</code>
                 </td>
+                <td>Unique team identifier.</td>
               </tr>
               <tr>
-                <td><code>nationality</code></td>
-                <td><code>string</code></td>
                 <td>
-                  Player's country of origin.
+                  <code>teamname</code>
                 </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Full name of MLS team.</td>
               </tr>
               <tr>
-                <td><code>photoUrl</code></td>
-                <td><code>string</code></td>
-                <td>URL for the player's image.</td>
+                <td>
+                  <code>stadium</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Full name of the team's home stadium.</td>
               </tr>
               <tr>
-                <td><code>preferedFoot</code></td>
-                <td><code>string</code></td>
-                <td>Player's dominate foot.</td>
+                <td>
+                  <code>logoUrl</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>URL for the team's logo.</td>
               </tr>
               <tr>
-                <td><code>age</code></td>
-                <td><code>number</code></td>
-                <td>Player's age in years for the 2019 MLS season.</td>
-              </tr>
-              <tr>
-                <td><code>team</code></td>
-                <td><code>string</code></td>
-                <td>Player's team at the end of the 2019 MLS season.</td>
+                <td>
+                  <code>city</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>City location of the team's stadium</td>
               </tr>
             </tbody>
           </table>
-          <FetchDisplay display={this.state.playersResponse} syntaxHighlight={this.syntaxHighlight}/>
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>GET</span> /api/v1/teams/
+            </p>
+            <input
+              className='input__team-id'
+              placeholder=':id'
+              name='teamNum'
+              maxLength='40'
+              value={this.state.teamNum}
+              onChange={this.handleChange}
+            />
+            <button type='button' onClick={this.setTeamResponse}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearTeamResponse}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.teamResponse} theme='hopscotch' />
+        </div>
 
 
 
-          <h2>GET /api/v1/players/:id</h2>
-          <h3>Query Parameters</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><code>id</code></td>
-              <td><code>number</code></td>
-              <td>
-                Unique player identifier.
-              </td>
-            </tr>
-          </tbody>
-        </table>
-
-        <h3>Response</h3>
-        <table>
-          <thead>
-            <tr>
-              <th>Status</th>
-              <th>Response</th>
-            </tr>
-          </thead>
-          <tr>
-            <th>200</th>
-            <th>Returns a specific player object.</th>
-          </tr>
-            <tr>
-            <th>404</th>
-            <th><code>{`"error": "There is a not player with an id of 1000"`}</code> 
-            </th>
-          </tr>
-        </table>
-
-        <h3>Response Parameters</h3>
+        <div className='main__div--border'>
+          <h1>GET /api/v1/players</h1>
+          <h3>Response Parameters</h3>
           <table>
             <thead>
               <tr>
@@ -274,47 +309,88 @@ class App extends Component {
             </thead>
             <tbody>
               <tr>
-                <td><code>id</code></td>
-                <td><code>number</code></td>
+                <td>
+                  <code>id</code>
+                </td>
+                <td>
+                  <code>number</code>
+                </td>
                 <td>Unique player identifier.</td>
               </tr>
               <tr>
-                <td><code>name</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>name</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>Full name of player.</td>
               </tr>
               <tr>
-                <td><code>nationality</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>nationality</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>Player's country of origin.</td>
               </tr>
               <tr>
-                <td><code>photoUrl</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>photoUrl</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>URL for the player's image.</td>
               </tr>
               <tr>
-                <td><code>preferedFoot</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>preferedFoot</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>Player's dominate foot.</td>
               </tr>
               <tr>
-                <td><code>age</code></td>
-                <td><code>number</code></td>
+                <td>
+                  <code>age</code>
+                </td>
+                <td>
+                  <code>number</code>
+                </td>
                 <td>Player's age in years for the 2019 MLS season.</td>
               </tr>
               <tr>
-                <td><code>team</code></td>
-                <td><code>string</code></td>
+                <td>
+                  <code>team</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
                 <td>Player's team at the end of the 2019 MLS season.</td>
               </tr>
             </tbody>
           </table>
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>GET</span> /api/v1/players
+            </p>
+            <button type='button' onClick={this.setPlayersResponse}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearPlayersResponse}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.playersResponse} theme='hopscotch' />
+        </div>
 
-          <FetchDisplay display={this.state.playerResponse} syntaxHighlight={this.syntaxHighlight}/>
 
 
-          <h2>GET /api/v1/teams/:id/roster</h2>
+        <div className='main__div--border'>
+          <h1>GET /api/v1/players/:id</h1>
           <h3>Query Parameters</h3>
           <table>
             <thead>
@@ -326,169 +402,16 @@ class App extends Component {
             </thead>
             <tbody>
               <tr>
-                <td><code>id</code></td>
-                <td><code>number</code> / <code>string</code></td>
                 <td>
-                  Unique team identifier or full team name 
+                  <code>id</code>
                 </td>
+                <td>
+                  <code>number</code>
+                </td>
+                <td>Unique player identifier.</td>
               </tr>
             </tbody>
           </table>
-
-          <h3>Response</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Status</th>
-                <th>Response</th>
-              </tr>
-            </thead>
-            <tr>
-              <th>200</th>
-              <th>Returns an array of the player objects associated with a specific team.</th>
-            </tr>
-              <tr>
-              <th>404</th>
-              <th>
-                <code>
-                  { "error: `Requested team: ${id}. There is no record of that team`" }
-                </code> 
-              </th>
-            </tr>
-          </table>
-          <FetchDisplay display={this.state.rosterResponse} syntaxHighlight={this.syntaxHighlight}/>
-
-
-
-
-          <h2>POST/api/v1/teams</h2>
-          <h3>Parameters</h3>
-          <table>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Required</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>teamname</code></td>
-                <td><code>string</code></td>
-                <td>
-                  Full name of MLS team.
-                </td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td><code>stadium</code></td>
-                <td><code>string</code></td>
-                <td>
-                  Full name of the team's home stadium.
-                </td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td><code>logoUrl</code></td>
-                <td><code>string</code></td>
-                <td>URL for the team's logo.</td>
-                <td>Yes</td>
-              </tr>
-              <tr>
-                <td><code>city</code></td>
-                <td><code>string</code></td>
-                <td>City location of the team's stadium</td>
-                <td>Yes</td>
-              </tr>
-            </tbody>
-          </table>
-
-            <h3>Response</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Status</th>
-                  <th>Response</th>
-                </tr>
-              </thead>
-              <tr>
-                <th>200</th>
-                <th>Returns the new player object.</th>
-              </tr>
-                <tr>
-                <th>422</th>
-                <th>
-                  <code>
-                    { 'error: `Expected format: { teamname: <String>, city: <String>, stadium: <Sring>, logoUrl: <String> }. You\'re missing a "${requiredParameter}" property.` '}
-                  </code> 
-                </th>
-              </tr>
-            </table>
-
-          <FetchDisplay display={this.state.postTeamResponse} syntaxHighlight={this.syntaxHighlight}/>
-
-
-
-
-          <h2>POST /api/v1/players</h2>
-          <h2>PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS</h2>
-
-          <h3>Parameters</h3>
-            <table>
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Type</th>
-                  <th>Description</th>
-                  <th>Required</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><code>name</code></td>
-                  <td><code>string</code></td>
-                  <td>
-                    Full name of player.
-                  </td>
-                  <td>Yes</td>
-                </tr>
-                <tr>
-                  <td><code>nationality</code></td>
-                  <td><code>string</code></td>
-                  <td>
-                    Player's country of origin.
-                  </td>
-                  <td>Yes</td>
-                </tr>
-                <tr>
-                  <td><code>photoUrl</code></td>
-                  <td><code>string</code></td>
-                  <td>URL for the player's image.</td>
-                  <td>Yes</td>
-                </tr>
-                <tr>
-                  <td><code>preferedFoot</code></td>
-                  <td><code>string</code></td>
-                  <td>Player's dominate foot.</td>
-                  <td>
-                    Yes
-                  </td>
-                </tr>
-                <tr>
-                  <td><code>age</code></td>
-                  <td><code>number</code></td>
-                  <td>Player's age in years for the 2019 MLS season.</td>
-                  <td>Yes</td>
-                </tr>
-                <tr>
-                  <td><code>team</code></td>
-                  <td><code>string</code></td>
-                  <td>Player's team</td>
-                  <td>Yes</td>
-                </tr>
-              </tbody>
-            </table>
 
           <h3>Response</h3>
           <table>
@@ -502,17 +425,506 @@ class App extends Component {
               <th>200</th>
               <th>Returns a specific player object.</th>
             </tr>
-              <tr>
+            <tr>
               <th>404</th>
               <th>
-                <code>
-                  { 'error: `Expected format: { name: <String>, age: <Int>, photoUrl: <String>, nationality: <String>, preferedFoot: <String>, team: <String>, }. You\'re missing a "${param}" property.`'}
-                </code> 
+                <code>{`"error": "There is a not player with an id of 1000"`}</code>
               </th>
             </tr>
           </table>
-          <FetchDisplay display={this.state.postPlayerResponse} syntaxHighlight={this.syntaxHighlight}/>
 
+          <h3>Response Parameters</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code>id</code>
+                </td>
+                <td>
+                  <code>number</code>
+                </td>
+                <td>Unique player identifier.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>name</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Full name of player.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>nationality</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Player's country of origin.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>photoUrl</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>URL for the player's image.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>preferedFoot</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Player's dominate foot.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>age</code>
+                </td>
+                <td>
+                  <code>number</code>
+                </td>
+                <td>Player's age in years for the 2019 MLS season.</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>team</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Player's team at the end of the 2019 MLS season.</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>GET</span> /api/v1/players/
+            </p>
+            <input
+              className='input__player-id'
+              placeholder=':id'
+              name='playerNum'
+              maxLength='40'
+              value={this.state.playerNum}
+              onChange={this.handleChange}
+            />
+            <button type='button' onClick={this.setPlayerResponse}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearPlayerResponse}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.playerResponse} theme='hopscotch' />
+        </div>
+
+
+
+
+
+
+
+        <div className='main__div--border'>
+          <h1>GET /api/v1/teams/:id/roster</h1>
+          <h3>Query Parameters</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code>id</code>
+                </td>
+                <td>
+                  <code>number</code> / <code>string</code>
+                </td>
+                <td>Unique team identifier or full team name</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Response</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Response</th>
+              </tr>
+            </thead>
+            <tr>
+              <th>200</th>
+              <th>
+                Returns an array of the player objects associated with a
+                specific team.
+              </th>
+            </tr>
+            <tr>
+              <th>404</th>
+              <th>
+                <code>
+                  {
+                    'error: `Requested team: ${id}. There is no record of that team`'
+                  }
+                </code>
+              </th>
+            </tr>
+          </table>
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>GET</span> /api/v1/teams/
+            </p>
+            <input
+              className='input__roster-id'
+              placeholder=':id'
+              name='rosterNum'
+              maxLength='40'
+              value={this.state.rosterNum}
+              onChange={this.handleChange}
+            />
+            <p>/roster</p>
+            <button type='button' onClick={this.setRoster}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearRoster}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.rosterResponse} theme='hopscotch' />
+          </div>
+
+
+
+
+
+
+          <div className='main__div--border'>
+          <h1>POST/api/v1/teams</h1>
+          <h3>Parameters</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code>teamname</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Full name of MLS team.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>stadium</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Full name of the team's home stadium.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>logoUrl</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>URL for the team's logo.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>city</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>City location of the team's stadium</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Response</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Response</th>
+              </tr>
+            </thead>
+            <tr>
+              <th>200</th>
+              <th>Returns the new player object.</th>
+            </tr>
+            <tr>
+              <th>422</th>
+              <th>
+                <code>
+                  {
+                    'error: `Expected format: { teamname: <String>, city: <String>, stadium: <Sring>, logoUrl: <String> }. You\'re missing a "${requiredParameter}" property.` '
+                  }
+                </code>
+              </th>
+            </tr>
+          </table>
+
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>GET</span> /api/v1/teams/
+            </p>
+            <div className="input-container">
+
+            <input
+              className='input__teamname multi-input'
+              placeholder='Team Name'
+              name='teamname'
+              value={this.state.teamname}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__city multi-input'
+              placeholder='City'
+              name='city'
+              value={this.state.city}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__stadium multi-input'
+              placeholder='Stadium'
+              name='stadium'
+              value={this.state.stadium}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__logoUrl multi-input'
+              placeholder='URL for team logo'
+              name='logoUrl'
+              maxLength='40'
+              value={this.state.logoUrl}
+              onChange={this.handleChange}
+              />
+            
+              </div>
+            <button type='button' onClick={this.makeTeam}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearTeam}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.postTeamResponse} theme='hopscotch' />
+          </div>
+
+
+
+
+
+
+
+
+
+
+
+
+          <div className='main__div--border'>
+          <h1>POST /api/v1/players</h1>
+          <h2>PLAYERS CAN ONLY BE ADDED TO EXISTING TEAMS</h2>
+
+          <h3>Parameters</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Required</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <code>name</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Full name of player.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>nationality</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Player's country of origin.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>photoUrl</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>URL for the player's image.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>preferedFoot</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Player's dominate foot.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>age</code>
+                </td>
+                <td>
+                  <code>number</code>
+                </td>
+                <td>Player's age in years for the 2019 MLS season.</td>
+                <td>Yes</td>
+              </tr>
+              <tr>
+                <td>
+                  <code>team</code>
+                </td>
+                <td>
+                  <code>string</code>
+                </td>
+                <td>Player's team</td>
+                <td>Yes</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3>Response</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Response</th>
+              </tr>
+            </thead>
+            <tr>
+              <th>200</th>
+              <th>Returns a specific player object.</th>
+            </tr>
+            <tr>
+              <th>404</th>
+              <th>
+                <code>
+                  {
+                    'error: `Expected format: { name: <String>, age: <Int>, photoUrl: <String>, nationality: <String>, preferedFoot: <String>, team: <String>, }. You\'re missing a "${param}" property.`'
+                  }
+                </code>
+              </th>
+            </tr>
+          </table>
+          <div className='div__row player-post'>
+            <p>
+              Try it:<span className='bold'>POST</span> /api/v1/players
+            </p>
+            <p className="options">Options:</p>
+            <div className="input-container">
+            <input
+              className='input__name multi-input'
+              placeholder='Player Name'
+              name='name'
+              value={this.state.name}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__nationality multi-input'
+              placeholder='Player Nationality'
+              name='nationality'
+              value={this.state.nationality}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__photoUrl multi-input'
+              placeholder='Photo URL'
+              name='photoUrl'
+              value={this.state.photoUrl}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__preferedFoot multi-input'
+              placeholder='Prefered Foot'
+              name='preferedFoot'
+              maxLength='40'
+              value={this.state.preferedFoot}
+              onChange={this.handleChange}
+              />
+            <input
+              className='input__age multi-input'
+              placeholder='Player Age'
+              name='age'
+              maxLength='3'
+              value={this.state.age}
+              onChange={this.handleChange}
+            />
+            <input
+              className='input__team multi-input'
+              placeholder='Player Team'
+              name='team'
+              maxLength='40'
+              value={this.state.team}
+              onChange={this.handleChange}
+            />            
+              </div>
+            <button type='button' onClick={this.makePlayer}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearPlayer}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.postPlayerResponse} theme='hopscotch' />
+          </div>
+
+
+
+
+
+
+
+
+
+          <div className='main__div--border'>
           <h2>DELETE /api/v1/players</h2>
           <h3>Response</h3>
           <table>
@@ -526,12 +938,65 @@ class App extends Component {
               <th>200</th>
               <th>{'Player ${id} sucessfully deleted.'}</th>
             </tr>
-              <tr>
+            <tr>
               <th>404</th>
-              <th><code>{'No player with the id of ${id}'}</code></th>
+              <th>
+                <code>{'No player with the id of ${id}'}</code>
+              </th>
             </tr>
           </table>
-          <FetchDisplay display={this.state.deleteTeamResponse} syntaxHighlight={this.syntaxHighlight}/>
+          <h3>Response</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Status</th>
+                <th>Response</th>
+              </tr>
+            </thead>
+            <tr>
+              <th>200</th>
+              <th>
+                Returns an array of the player objects associated with a
+                specific team.
+              </th>
+            </tr>
+            <tr>
+              <th>404</th>
+              <th>
+                <code>
+                  {
+                    'error: `Requested team: ${id}. There is no record of that team`'
+                  }
+                </code>
+              </th>
+            </tr>
+          </table>
+          <div className='div__row'>
+            <p>
+              Try it:<span className='bold'>DELETE</span> /api/v1/teams/
+            </p>
+            <input
+              className='input__del-player-num-id'
+              placeholder=':id'
+              name='eletePlayerNum'
+              maxLength='40'
+              value={this.state.eletePlayerNum}
+              onChange={this.handleChange}
+            />
+            <p>/roster</p>
+            <button type='button' onClick={this.removePlayer}>
+              Go!
+            </button>
+            <button type='button' onClick={this.clearDelete}>
+              Clear the field
+            </button>
+          </div>
+          <ReactJson src={this.state.rosterResponse} theme='hopscotch' />
+        </div>
+
+
+
+
         </main>
       </>
     );
