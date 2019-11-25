@@ -23,7 +23,7 @@ class App extends Component {
       rosterResponse: [],
       postPlayerResponse: {},
       postTeamResponse: {},
-      deletePlayerResponse: '',
+      deletePlayerResponse: {},
       deletePlayerNum: null,
       playerNum: null,
       teamNum: null,
@@ -84,7 +84,7 @@ class App extends Component {
     this.setState({ teamname: null, city: null, logoUrl: null, stadium: null });
 
   clearDelete = () =>
-    this.setState({ deletePlayerNum: null, deletePlayerResponse: '' });
+    this.setState({ deletePlayerNum: null, deletePlayerResponse: {} });
 
   clearPostPlayerResponses = () => {
     this.setState({
@@ -114,7 +114,9 @@ class App extends Component {
 
   removePlayer = async () => {
     const id = this.state.deletePlayerNum;
-    const deletePlayerResponse = await deletePlayer(id);
+    const res = await deletePlayer(id);
+    const deletePlayerResponse = ({response:res})
+
     this.setState({ deletePlayerResponse });
   };
 
@@ -943,7 +945,7 @@ class App extends Component {
             </table>
             <div className='div__row'>
               <p>
-                Try it:<span className='bold'>DELETE</span> /api/v1/teams/
+                Try it:<span className='bold'>DELETE</span> /api/v1/players/
               </p>
               <input
                 className='input__del-player-num-id'
@@ -953,15 +955,14 @@ class App extends Component {
                 value={this.state.deletePlayerNum}
                 onChange={this.handleChange}
               />
-              <p>/roster</p>
               <button type='button' onClick={this.removePlayer}>
                 Go!
               </button>
               <button type='button' onClick={this.clearDelete}>
-                Clear the field
+                Clear the field!
               </button>
             </div>
-            <ReactJson src={this.state.rosterResponse} theme='hopscotch' />
+            <ReactJson src={this.state.deletePlayerResponse} theme='hopscotch' />
           </div>
         </main>
       </>
