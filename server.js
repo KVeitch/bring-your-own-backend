@@ -171,7 +171,7 @@ app.post('/api/v1/teams', (request, response) => {
 });
 
 app.get("/", (request, response) => {
-  response.send("Please head to https://https://github.com/KVeitch/bring-your-own-backend for documentation");
+  response.send("Please head to https://github.com/KVeitch/bring-your-own-backend for documentation");
 });
 
 app.listen(app.get('port'), () => {
