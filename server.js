@@ -61,7 +61,9 @@ app.get('/api/v1/teams/:id', (request, response) => {
       if (team.length === 0) {
         response
           .status(404)
-          .json({ error: `Requested team: ${id}. There is no record of that team` });
+          .json({
+            error: `Requested team: ${id}. There is no record of that team`
+          });
       }
       response.status(200).json(team[0]);
     })
@@ -82,7 +84,9 @@ app.get('/api/v1/teams/:id/roster', (request, response) => {
       if (team.length === 0) {
         response
           .status(404)
-          .json({ error: `Requested team: ${id}. There is no record of that team` });
+          .json({
+            error: `Requested team: ${id}. There is no record of that team`
+          });
       }
       database('players')
         .where({ team: team[0].teamname })
@@ -103,14 +107,15 @@ app.get('/api/v1/teams/:id/roster', (request, response) => {
 app.delete('/api/v1/players/:id', (request, response) => {
   const { id } = request.params;
   database('players')
-    .where({ id: id }).select()
+    .where({ id: id })
+    .select()
     .del()
     .then(results => {
-      if (results === 0 ) {
-        response.status(404).json(`No player with the id of ${id}`)
+      if (results === 0) {
+        response.status(404).json(`No player with the id of ${id}`);
       }
-      response.status(200).json(`Player ${id} sucessfully deleted.`)
-  })
+      response.status(200).json(`Player ${id} sucessfully deleted.`);
+    })
     .catch(error => {
       response.status(404).json({ error });
     });
